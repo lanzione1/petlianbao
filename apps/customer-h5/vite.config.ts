@@ -4,7 +4,7 @@ import { resolve } from 'path'
 
 export default defineConfig(({ mode }) => ({
   plugins: [vue()],
-  base: mode === 'production' ? '/petlianbao-h5/' : '/',
+  base: mode === 'production' ? '/petlianbao/h5/' : '/',
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src')
