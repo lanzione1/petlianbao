@@ -22,14 +22,16 @@ WORKDIR /app
 ENV HUSKY=0
 
 COPY --from=builder /app/apps/backend/dist ./dist
-COPY --from=builder /app/apps/backend/package.json ./
+COPY --from=builder /app/apps/backend/package.json ./apps/backend/
 COPY --from=builder /app/package.json ./
 COPY --from=builder /app/pnpm-lock.yaml ./
 COPY --from=builder /app/pnpm-workspace.yaml ./
 COPY --from=builder /app/packages/types ./packages/types
 COPY --from=builder /app/packages/utils ./packages/utils
 
-RUN npm install -g pnpm@8.15.0 && pnpm install --prod --frozen-lockfile --ignore-scripts
+RUN npm install -g pnpm@8.15.0 && pnpm install --frozen-lockfile --ignore-scripts
+
+WORKDIR /app/apps/backend
 
 RUN mkdir -p uploads
 
