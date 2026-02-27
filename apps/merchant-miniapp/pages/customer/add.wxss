@@ -1,0 +1,268 @@
+/* ============================================
+   客户编辑/新增页 - iOS 极简风格
+   ============================================ */
+
+.container {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+}
+
+/* 分区标签 */
+.form-section {
+  padding: 0 var(--spacing-lg);
+  margin-bottom: var(--spacing-sm);
+}
+
+.section-label {
+  font-size: var(--font-sm);
+  color: var(--color-tertiary-label);
+  text-transform: uppercase;
+  letter-spacing: 1rpx;
+  padding: var(--spacing-xl) 0 var(--spacing-sm) var(--spacing-xs);
+}
+
+.section-label-row {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-xl) 0 var(--spacing-sm) var(--spacing-xs);
+}
+
+.section-count {
+  font-size: var(--font-sm);
+  color: var(--color-tertiary-label);
+  margin-left: var(--spacing-sm);
+}
+
+/* 表单卡片 */
+.form-card {
+  background-color: var(--color-card);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+/* 表单行 */
+.form-row {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--spacing-lg);
+  min-height: 96rpx;
+}
+
+.form-row-textarea {
+  flex-direction: column;
+  align-items: flex-start;
+  padding: var(--spacing-lg);
+}
+
+.form-label {
+  font-size: var(--font-base);
+  color: var(--color-label);
+  font-weight: 500;
+  width: 140rpx;
+  flex-shrink: 0;
+}
+
+.form-row-textarea .form-label {
+  width: auto;
+  margin-bottom: var(--spacing-sm);
+}
+
+.form-input {
+  flex: 1;
+  font-size: var(--font-base);
+  color: var(--color-label);
+  text-align: right;
+  height: 96rpx;
+}
+
+.form-placeholder {
+  color: var(--color-placeholder);
+}
+
+.form-textarea {
+  width: 100%;
+  min-height: 120rpx;
+  font-size: var(--font-base);
+  color: var(--color-label);
+  line-height: 1.6;
+  padding: 0;
+}
+
+.form-divider {
+  height: 1rpx;
+  background-color: var(--color-separator);
+  margin-left: var(--spacing-lg);
+}
+
+.form-divider.indent {
+  margin-left: 120rpx;
+}
+
+/* 性别选择器 */
+.gender-picker {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-left: auto;
+}
+
+.gender-option {
+  padding: 12rpx 32rpx;
+  border-radius: var(--radius-full);
+  background-color: var(--color-fill);
+  font-size: var(--font-sm);
+  color: var(--color-secondary-label);
+  transition: all 0.2s ease;
+}
+
+.gender-option.active {
+  background-color: var(--color-primary);
+  color: #FFFFFF;
+}
+
+/* 宠物行 */
+.pet-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md) var(--spacing-lg);
+}
+
+.pet-row-left {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.pet-avatar-sm {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  background-color: var(--color-fill);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pet-emoji {
+  font-size: 36rpx;
+}
+
+.pet-row-info {
+  margin-left: var(--spacing-md);
+  flex: 1;
+  min-width: 0;
+}
+
+.pet-row-name {
+  font-size: var(--font-base);
+  font-weight: 500;
+  color: var(--color-label);
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pet-row-breed {
+  font-size: var(--font-xs);
+  color: var(--color-tertiary-label);
+  display: block;
+  margin-top: 4rpx;
+}
+
+.pet-row-actions {
+  display: flex;
+  gap: var(--spacing-lg);
+  flex-shrink: 0;
+  margin-left: var(--spacing-md);
+}
+
+.pet-action-btn {
+  font-size: var(--font-sm);
+  font-weight: 500;
+}
+
+.pet-action-btn.edit {
+  color: var(--color-primary);
+}
+
+.pet-action-btn.delete {
+  color: var(--color-danger);
+}
+
+/* 添加宠物 */
+.add-pet-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-lg);
+  margin-top: var(--spacing-sm);
+  background-color: var(--color-card);
+  border-radius: var(--radius-md);
+  border: 2rpx dashed var(--color-separator-opaque);
+}
+
+.add-pet-hover {
+  background-color: var(--color-fill);
+}
+
+.add-pet-icon {
+  font-size: var(--font-lg);
+  color: var(--color-primary);
+  font-weight: 300;
+}
+
+.add-pet-text {
+  font-size: var(--font-base);
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+/* 底部占位 */
+.bottom-spacer {
+  height: 180rpx;
+}
+
+/* 底部操作栏 */
+.action-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(40rpx);
+  -webkit-backdrop-filter: blur(40rpx);
+  border-top: 1rpx solid var(--color-separator);
+  padding: var(--spacing-md) var(--spacing-lg);
+  padding-bottom: calc(var(--spacing-md) + env(safe-area-inset-bottom));
+  z-index: 100;
+}
+
+.btn-save {
+  width: 100%;
+  background-color: var(--color-primary);
+  color: #FFFFFF;
+  border: none;
+  border-radius: var(--radius-md);
+  height: 96rpx;
+  line-height: 96rpx;
+  font-size: var(--font-md);
+  font-weight: 600;
+  padding: 0;
+}
+
+.btn-save::after {
+  border: none;
+}
+
+.btn-save:active {
+  opacity: 0.8;
+}
+
+.btn-save[disabled] {
+  opacity: 0.5;
+}

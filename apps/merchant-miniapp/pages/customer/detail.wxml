@@ -1,0 +1,114 @@
+<view class="container">
+  <!-- 客户信息头部 -->
+  <view class="profile-section">
+    <view class="profile-card">
+      <view class="profile-avatar">
+        <text class="avatar-text">{{customer.petName ? customer.petName[0] : '?'}}</text>
+      </view>
+      <view class="profile-info">
+        <view class="profile-name-row">
+          <text class="profile-name">{{customer.petName || '未设置姓名'}}</text>
+          <text class="gender-badge" wx:if="{{customer.gender === 'male'}}">♂</text>
+          <text class="gender-badge female" wx:if="{{customer.gender === 'female'}}">♀</text>
+        </view>
+        <text class="profile-phone">{{customer.phone || '无电话'}}</text>
+      </view>
+      <view class="profile-tags" wx:if="{{customer.tags && customer.tags.length > 0}}">
+        <text class="tag-item" wx:for="{{customer.tags}}" wx:key="*this">{{tagText[item] || item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 统计数据 -->
+  <view class="stats-section">
+    <view class="stats-card">
+      <view class="stat-item">
+        <text class="stat-value">¥{{customer.totalSpent || 0}}</text>
+        <text class="stat-label">累计消费</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-value">{{customer.visitCount || 0}}</text>
+        <text class="stat-label">到店次数</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-value">¥{{avgPrice}}</text>
+        <text class="stat-label">平均客单价</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 宠物档案 -->
+  <view class="section">
+    <view class="section-title-bar">
+      <text class="section-title">宠物档案</text>
+      <text class="section-count" wx:if="{{customer.pets && customer.pets.length > 0}}">{{customer.pets.length}}只</text>
+      <view class="section-action" bindtap="addPet">
+        <text class="action-text">添加</text>
+      </view>
+    </view>
+
+    <view class="pets-grid" wx:if="{{customer.pets && customer.pets.length > 0}}">
+      <scroll-view scroll-x class="pets-scroll" enhanced show-scrollbar="{{false}}">
+        <view class="pets-row">
+          <block wx:for="{{customer.pets}}" wx:key="id">
+            <view class="pet-card" bindtap="editPet" data-id="{{item.id}}" hover-class="pet-card-hover">
+              <view class="pet-avatar" wx:if="{{!item.photo}}">
+                <text class="pet-emoji">{{item.species === 'dog' ? '🐕' : item.species === 'cat' ? '🐱' : '🐾'}}</text>
+              </view>
+              <image wx:if="{{item.photo}}" src="{{item.photoUrl}}" mode="aspectFill" class="pet-photo" />
+              <text class="pet-name">{{item.name}}</text>
+              <text class="pet-breed">{{item.breed}}</text>
+              <view class="pet-badges" wx:if="{{item.nextVaccineDate || item.nextDewormDate}}">
+                <text class="pet-badge vaccine" wx:if="{{item.nextVaccineDate}}">💉</text>
+                <text class="pet-badge deworm" wx:if="{{item.nextDewormDate}}">🛡️</text>
+              </view>
+            </view>
+          </block>
+        </view>
+      </scroll-view>
+    </view>
+
+    <view class="empty-pets" wx:else bindtap="addPet" hover-class="empty-pets-hover">
+      <text class="empty-pets-icon">🐾</text>
+      <text class="empty-pets-text">添加第一只宠物</text>
+    </view>
+  </view>
+
+  <!-- 消费记录 -->
+  <view class="section">
+    <view class="section-title-bar">
+      <text class="section-title">消费记录</text>
+    </view>
+
+    <view class="history-card" wx:if="{{history.length > 0}}">
+      <block wx:for="{{history}}" wx:key="id">
+        <view class="history-row">
+          <view class="history-left">
+            <text class="history-items">{{item.itemsText || '消费'}}</text>
+            <text class="history-date">{{item.dateText}}</text>
+          </view>
+          <text class="history-amount">¥{{item.totalAmount}}</text>
+        </view>
+        <view class="history-separator" wx:if="{{index < history.length - 1}}"></view>
+      </block>
+    </view>
+
+    <view class="empty-inline" wx:else>
+      <text class="empty-inline-text">暂无消费记录</text>
+    </view>
+  </view>
+
+  <!-- 底部占位 -->
+  <view class="bottom-spacer"></view>
+
+  <!-- 底部操作栏 -->
+  <view class="action-bar">
+    <view class="action-bar-inner">
+      <button class="btn-action-primary" bindtap="goBilling">新增消费</button>
+      <button class="btn-action-secondary" bindtap="editCustomer">编辑</button>
+      <button class="btn-action-danger" bindtap="deleteCustomer">删除</button>
+    </view>
+  </view>
+</view>

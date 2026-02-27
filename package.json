@@ -1,0 +1,46 @@
+{
+  "name": "petlianbao",
+  "version": "1.0.0",
+  "private": true,
+  "description": "宠联宝 - 小微宠物服务数字化工具箱",
+  "scripts": {
+    "dev:backend": "pnpm --filter @petlianbao/backend dev",
+    "dev:miniapp": "pnpm --filter @petlianbao/merchant-miniapp dev",
+    "dev:h5": "pnpm --filter @petlianbao/customer-h5 dev",
+    "dev:admin": "pnpm --filter @petlianbao/admin-web dev",
+    "build:backend": "pnpm --filter @petlianbao/backend build",
+    "build:all": "pnpm -r build",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm --filter @petlianbao/backend test",
+    "test:e2e": "pnpm --filter @petlianbao/backend test:e2e",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "apps/backend/**/*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "apps/admin-web/**/*.{vue,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "apps/customer-h5/**/*.{vue,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "packages/**/*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
+  "devDependencies": {
+    "husky": "^9.0.7",
+    "lint-staged": "^15.2.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.15.0"
+}

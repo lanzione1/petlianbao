@@ -1,0 +1,124 @@
+<wxs module="utils">
+module.exports = {
+  contains: function(arr, val) {
+    if (!arr || !arr.length) return false;
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i] === val) return true;
+    }
+    return false;
+  }
+}
+</wxs>
+
+<view class="container">
+  <view class="form-section">
+    <view class="section-title">选择客户</view>
+    <view class="customer-select" bindtap="selectCustomer">
+      <block wx:if="{{selectedCustomer}}">
+        <view class="customer-info">
+          <text class="customer-name">{{selectedCustomer.petName}}</text>
+          <text class="customer-phone">{{selectedCustomer.phone}}</text>
+        </view>
+        <text class="arrow">›</text>
+      </block>
+      <block wx:else>
+        <text class="placeholder">点击选择客户</text>
+        <text class="arrow">›</text>
+      </block>
+    </view>
+  </view>
+
+  <view class="form-section" wx:if="{{selectedCustomer}}">
+    <view class="section-title">选择宠物 <text class="required">*</text></view>
+    
+    <!-- 加载中 -->
+    <view class="pet-loading" wx:if="{{loadingPets}}">
+      <text>加载中...</text>
+    </view>
+    
+    <!-- 宠物列表 -->
+    <view class="pet-list" wx:elif="{{pets.length > 0}}">
+      <view 
+        class="pet-item {{utils.contains(selectedPets, item.id) ? 'selected' : ''}}" 
+        wx:for="{{pets}}" 
+        wx:key="id"
+        bindtap="togglePet"
+        data-id="{{item.id}}"
+      >
+        <view class="pet-info">
+          <text class="pet-icon">{{item.species === 'dog' ? '🐕' : item.species === 'cat' ? '🐱' : '🐾'}}</text>
+          <view class="pet-detail">
+            <text class="pet-name">{{item.name}}</text>
+            <text class="pet-breed" wx:if="{{item.breed}}">{{item.breed}}</text>
+          </view>
+        </view>
+        <view class="pet-check" wx:if="{{utils.contains(selectedPets, item.id)}}">
+          <text class="check-icon">✓</text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 无宠物提示 -->
+    <view class="pet-empty" wx:elif="{{petsLoaded && pets.length === 0}}">
+      <text class="empty-icon">🐾</text>
+      <text class="empty-text">该客户暂无宠物</text>
+      <text class="empty-hint">请先添加宠物信息</text>
+      <button class="add-pet-btn" bindtap="addPet">+ 添加宠物</button>
+    </view>
+    
+    <!-- 添加宠物按钮（有宠物时也显示） -->
+    <view class="add-pet-link" wx:if="{{pets.length > 0}}" bindtap="addPet">
+      <text>+ 添加新宠物</text>
+    </view>
+  </view>
+
+  <view class="form-section">
+    <view class="section-title">选择服务</view>
+    <view class="service-list">
+      <view 
+        class="service-item {{selectedService && selectedService.id === service.id ? 'selected' : ''}}" 
+        wx:for="{{services}}" 
+        wx:for-item="service"
+        wx:key="id"
+        bindtap="selectService"
+        data-service="{{service}}"
+      >
+        <view class="service-info">
+          <text class="service-name">{{service.name}}</text>
+          <text class="service-duration" wx:if="{{service.duration}}">{{service.duration}}分钟</text>
+        </view>
+        <text class="service-price">¥{{service.price}}</text>
+        <text class="check-icon" wx:if="{{selectedService && selectedService.id === service.id}}">✓</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="form-section">
+    <view class="section-title">预约时间</view>
+    <picker mode="multiSelector" range="{{timeRange}}" value="{{timeIndex}}" bindchange="onTimeChange" bindcolumnchange="onTimeColumnChange">
+      <view class="picker-value">
+        <text wx:if="{{appointmentTimeText}}">{{appointmentTimeText}}</text>
+        <text class="placeholder" wx:else>点击选择时间</text>
+        <text class="arrow">›</text>
+      </view>
+    </picker>
+  </view>
+
+  <view class="form-section">
+    <view class="section-title">备注</view>
+    <textarea 
+      class="notes-input" 
+      placeholder="添加备注信息（选填）"
+      value="{{notes}}"
+      bindinput="onNotesInput"
+      maxlength="200"
+    />
+    <text class="notes-count">{{notes.length}}/200</text>
+  </view>
+
+  <view class="submit-bar">
+    <button class="btn-submit" type="primary" bindtap="submitAppointment" disabled="{{!canSubmit}}">
+      确认预约
+    </button>
+  </view>
+</view>

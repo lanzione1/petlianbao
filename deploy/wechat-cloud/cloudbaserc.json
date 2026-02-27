@@ -1,0 +1,29 @@
+{
+  "version": "1.0",
+  "services": [
+    {
+      "name": "petlianbao-backend",
+      "dockerfile": "./Dockerfile",
+      "context": "../..",
+      "port": 80,
+      "envVariables": {
+        "NODE_ENV": "production",
+        "PORT": "80",
+        "DATABASE_SSL": "true",
+        "DATABASE_SSL_REJECT_UNAUTHORIZED": "false",
+        "REDIS_TLS": "true"
+      },
+      "cpu": 0.5,
+      "mem": 512,
+      "minNum": 0,
+      "maxNum": 5,
+      "policyType": "cpu",
+      "policyThreshold": 60,
+      "containerPort": 80,
+      "healthCheck": {
+        "path": "/api/v1/health",
+        "protocol": "http"
+      }
+    }
+  ]
+}

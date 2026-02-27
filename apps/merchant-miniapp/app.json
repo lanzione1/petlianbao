@@ -1,0 +1,59 @@
+{
+  "pages": [
+    "pages/auth/register",
+    "pages/index/index",
+    "pages/appointment/detail",
+    "pages/appointment/create",
+    "pages/customer/list",
+    "pages/customer/detail",
+    "pages/customer/add",
+    "pages/billing/index",
+    "pages/billing/daily",
+    "pages/marketing/index",
+    "pages/service/index",
+    "pages/report/index",
+    "pages/qrcode/index",
+    "pages/mine/index",
+    "pages/staff/index",
+    "pages/logs/index",
+    "pages/pet/list",
+    "pages/pet/edit",
+    "pages/pet/reminder/index"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#667eea",
+    "navigationBarTitleText": "宠联宝",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#667eea",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/customer/list",
+        "text": "客户"
+      },
+      {
+        "pagePath": "pages/billing/index",
+        "text": "收银"
+      },
+      {
+        "pagePath": "pages/marketing/index",
+        "text": "营销"
+      },
+      {
+        "pagePath": "pages/mine/index",
+        "text": "我的"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

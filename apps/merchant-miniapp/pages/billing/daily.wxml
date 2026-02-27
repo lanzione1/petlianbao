@@ -1,0 +1,84 @@
+<view class="container">
+  <view class="date-header">
+    <view class="date-nav" bindtap="prevDay">◀</view>
+    <view class="date-text">{{dateText}}</view>
+    <view class="date-nav" bindtap="nextDay">▶</view>
+  </view>
+
+  <view class="summary-card">
+    <view class="summary-row">
+      <view class="summary-item main">
+        <text class="summary-value">¥{{report.totalRevenue || 0}}</text>
+        <text class="summary-label">总营业额</text>
+      </view>
+    </view>
+    <view class="summary-row">
+      <view class="summary-item">
+        <text class="summary-value">{{report.orderCount || 0}}</text>
+        <text class="summary-label">订单数</text>
+      </view>
+      <view class="summary-item">
+        <text class="summary-value">¥{{report.avgPrice || 0}}</text>
+        <text class="summary-label">平均客单价</text>
+      </view>
+      <view class="summary-item">
+        <text class="summary-value">{{report.uniqueCustomers || 0}}</text>
+        <text class="summary-label">客户数</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">支付方式</view>
+    <view class="payment-list">
+      <view class="payment-item" wx:for="{{paymentList}}" wx:key="method">
+        <text class="payment-method">{{methodText[item.method]}}</text>
+        <view class="payment-info">
+          <text class="payment-amount">¥{{item.amount}}</text>
+          <text class="payment-count">{{item.count}}单</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">服务排行</view>
+    <view class="service-list">
+      <view class="service-item" wx:for="{{report.serviceStats}}" wx:key="name">
+        <view class="service-rank">{{index + 1}}</view>
+        <view class="service-info">
+          <text class="service-name">{{item.name}}</text>
+          <text class="service-count">{{item.count}}次</text>
+        </view>
+        <text class="service-revenue">¥{{item.revenue}}</text>
+      </view>
+      <view class="empty" wx:if="{{!report.serviceStats || report.serviceStats.length === 0}}">
+        <text>暂无数据</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">现金对账</view>
+    <view class="cash-check">
+      <view class="cash-row">
+        <text class="cash-label">应收现金</text>
+        <text class="cash-value">¥{{cashExpected}}</text>
+      </view>
+      <view class="cash-row">
+        <text class="cash-label">实收现金</text>
+        <input class="cash-input" type="digit" placeholder="请输入" value="{{cashActual}}" bindinput="onCashInput" />
+      </view>
+      <view class="cash-row" wx:if="{{cashActual}}">
+        <text class="cash-label">差额</text>
+        <text class="cash-value {{cashDiff >= 0 ? 'positive' : 'negative'}}">
+          {{cashDiff >= 0 ? '+' : ''}}¥{{cashDiff}}
+        </text>
+      </view>
+    </view>
+  </view>
+
+  <view class="actions">
+    <button class="btn-submit" bindtap="closeDay">确认日结</button>
+  </view>
+</view>

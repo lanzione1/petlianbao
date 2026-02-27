@@ -1,0 +1,55 @@
+<view class="container">
+  <view class="header">
+    <text class="title">店员管理</text>
+    <text class="subtitle">管理店铺员工账号</text>
+  </view>
+
+  <view class="staff-list">
+    <view wx:if="{{loading}}" class="loading">加载中...</view>
+    <view wx:elif="{{staffs.length === 0}}" class="empty">暂无店员</view>
+    <view wx:else>
+      <view class="staff-item" wx:for="{{staffs}}" wx:key="id">
+        <view class="staff-info">
+          <view class="avatar">{{item.nickname ? item.nickname[0] : '店'}}</view>
+          <view class="detail">
+            <text class="name">{{item.nickname || '店员'}}</text>
+            <text class="role">{{item.role === 'admin' ? '管理员' : '店员'}}</text>
+          </view>
+        </view>
+        <view class="actions">
+          <text 
+            class="status {{item.status}}" 
+            bindtap="toggleStatus" 
+            data-id="{{item.id}}" 
+            data-status="{{item.status}}">
+            {{item.status === 'active' ? '启用中' : '已禁用'}}
+          </text>
+          <text 
+            wx:if="{{item.role !== 'admin'}}" 
+            class="delete" 
+            bindtap="deleteStaff" 
+            data-id="{{item.id}}" 
+            data-name="{{item.nickname}}">
+            删除
+          </text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <button class="btn-add" bindtap="addStaff">添加店员</button>
+
+  <view wx:if="{{showAddModal}}" class="modal-mask">
+    <view class="modal">
+      <view class="modal-title">添加店员</view>
+      <view class="modal-content">
+        <input class="modal-input" placeholder="输入店员OpenID" bindinput="onOpenidInput" value="{{newStaffOpenid}}" />
+        <input class="modal-input" placeholder="输入店员昵称(可选)" bindinput="onNameInput" value="{{newStaffName}}" />
+      </view>
+      <view class="modal-buttons">
+        <button class="modal-btn cancel" bindtap="closeAddModal">取消</button>
+        <button class="modal-btn confirm" bindtap="confirmAddStaff">确定</button>
+      </view>
+    </view>
+  </view>
+</view>

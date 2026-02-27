@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "今日预约",
+  "enablePullDownRefresh": true,
+  "navigationBarRightButton": {
+    "type": "text",
+    "text": "+"
+  }
+}
