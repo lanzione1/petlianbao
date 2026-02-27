@@ -43,7 +43,7 @@ COPY packages/utils/package.json ./packages/utils/
 
 # 安装 pnpm 和生产依赖
 RUN npm install -g pnpm@8.15.0 && \
-    pnpm install --prod --frozen-lockfile
+    pnpm install --prod --frozen-lockfile --ignore-scripts
 
 # 从构建阶段复制构建产物
 COPY --from=builder /app/apps/backend/dist ./apps/backend/dist
