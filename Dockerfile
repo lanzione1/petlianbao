@@ -19,6 +19,8 @@ FROM node:18-alpine AS production
 
 WORKDIR /app
 
+ENV HUSKY=0
+
 COPY --from=builder /app/apps/backend/dist ./dist
 COPY --from=builder /app/apps/backend/package.json ./
 COPY --from=builder /app/package.json ./
@@ -27,7 +29,7 @@ COPY --from=builder /app/pnpm-workspace.yaml ./
 COPY --from=builder /app/packages/types ./packages/types
 COPY --from=builder /app/packages/utils ./packages/utils
 
-RUN npm install -g pnpm@8.15.0 && pnpm install --prod --frozen-lockfile
+RUN npm install -g pnpm@8.15.0 && pnpm install --prod --frozen-lockfile --ignore-scripts
 
 RUN mkdir -p uploads
 
