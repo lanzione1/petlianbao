@@ -10,8 +10,8 @@ COPY packages/utils/package.json ./packages/utils/
 RUN npm install -g pnpm@8.15.0 && pnpm install --frozen-lockfile
 
 COPY apps/backend ./apps/backend
-COPY packages/types ./packages/types
-COPY packages/utils ./packages/utils
+COPY packages/types/src ./packages/types/src
+COPY packages/utils/src ./packages/utils/src
 
 RUN pnpm --filter @petlianbao/backend build
 
@@ -19,17 +19,17 @@ FROM node:18-alpine AS production
 
 WORKDIR /app
 
-ENV HUSKY=0
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/backend/package.json ./apps/backend/
+COPY packages/types/package.json ./packages/types/
+COPY packages/types/src ./packages/types/src
+COPY packages/utils/package.json ./packages/utils/
+COPY packages/utils/src ./packages/utils/src
 
-COPY --from=builder /app/apps/backend/dist ./dist
-COPY --from=builder /app/apps/backend/package.json ./apps/backend/
-COPY --from=builder /app/package.json ./
-COPY --from=builder /app/pnpm-lock.yaml ./
-COPY --from=builder /app/pnpm-workspace.yaml ./
-COPY --from=builder /app/packages/types ./packages/types
-COPY --from=builder /app/packages/utils ./packages/utils
+RUN npm install -g pnpm@8.15.0 && \
+    pnpm install --prod --frozen-lockfile --ignore-scripts
 
-RUN npm install -g pnpm@8.15.0 && pnpm install --frozen-lockfile --ignore-scripts
+COPY --from=builder /app/apps/backend/dist ./apps/backend/dist
 
 WORKDIR /app/apps/backend
 
