@@ -1,0 +1,71 @@
+# Git
+.git
+.gitignore
+.github
+
+# Node
+node_modules
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# 前端应用(后端 Docker 不需要)
+apps/admin-web
+apps/customer-h5
+apps/merchant-miniapp
+
+# 文档和脚本
+docs
+scripts
+*.md
+README.md
+
+# 环境文件
+.env.local
+.env.development
+.env.*.local
+
+# IDE
+.idea
+.vscode
+.DS_Store
+*.swp
+*.swo
+
+# 测试
+test
+*.test.ts
+*.spec.ts
+coverage
+
+# 构建产物(会在 Docker 中重新构建)
+dist
+build
+*.tsbuildinfo
+
+# 日志
+*.log
+logs
+
+# 上传文件
+uploads
+apps/backend/uploads
+
+# 临时文件
+tmp
+temp
+.cache
+
+# Qoder
+.qoder
+
+# Husky
+.husky
+
+# 其他
+*.pdf
+logo
+deploy
+Dockerfile
+docker-compose*.yml
+.dockerignore
