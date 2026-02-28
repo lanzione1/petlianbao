@@ -14,7 +14,9 @@
         <div class="stat-label">累计收入（元）</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value highlight">{{ formatMoney(stats.transactions?.monthlyRevenue) }}</div>
+        <div class="stat-value highlight">
+          {{ formatMoney(stats.transactions?.monthlyRevenue) }}
+        </div>
         <div class="stat-label">本月收入（元）</div>
       </div>
     </div>
@@ -35,7 +37,11 @@
         </div>
         <div class="bars-container">
           <div v-for="(item, index) in trend" :key="index" class="bar-wrapper">
-            <div class="bar" :style="{ height: getBarHeight(item.revenue) + '%' }" :title="`${item.date}: ${formatMoney(item.revenue)}元`">
+            <div
+              class="bar"
+              :style="{ height: getBarHeight(item.revenue) + '%' }"
+              :title="`${item.date}: ${formatMoney(item.revenue)}元`"
+            >
               <span class="bar-tooltip">{{ formatMoney(item.revenue) }}</span>
             </div>
             <span class="bar-label">{{ formatDateShort(item.date) }}</span>
@@ -61,7 +67,9 @@
             <td>{{ m.shopName }}</td>
             <td>{{ m.phone || '-' }}</td>
             <td>
-              <span :class="['status-badge', 'plan-' + m.planType]">{{ getPlanName(m.planType) }}</span>
+              <span :class="['status-badge', 'plan-' + m.planType]">{{
+                getPlanName(m.planType)
+              }}</span>
             </td>
             <td>{{ formatDate(m.createdAt) }}</td>
             <td>
@@ -76,72 +84,72 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import { adminApi } from '@/api'
+import { ref, computed, onMounted } from 'vue';
+import { adminApi } from '@/api';
 
-const stats = ref<any>({})
-const trend = ref<any[]>([])
-const recentMerchants = ref<any[]>([])
-const days = ref(30)
+const stats = ref<any>({});
+const trend = ref<any[]>([]);
+const recentMerchants = ref<any[]>([]);
+const days = ref(30);
 
 const maxRevenue = computed(() => {
-  if (!trend.value.length) return 1
-  return Math.max(...trend.value.map(d => d.revenue || 0), 1)
-})
+  if (!trend.value.length) return 1;
+  return Math.max(...trend.value.map((d) => d.revenue || 0), 1);
+});
 
 onMounted(() => {
-  loadStats()
-  loadTrend()
-  loadRecentMerchants()
-})
+  loadStats();
+  loadTrend();
+  loadRecentMerchants();
+});
 
 async function loadStats() {
   try {
-    stats.value = await adminApi.getPlatformStats()
+    stats.value = await adminApi.getPlatformStats();
   } catch (e) {
-    console.error('加载平台统计失败', e)
+    console.error('加载平台统计失败', e);
   }
 }
 
 async function loadTrend() {
   try {
-    trend.value = await adminApi.getPlatformTrend(days.value)
+    trend.value = (await adminApi.getPlatformTrend(days.value)) as any;
   } catch (e) {
-    console.error('加载趋势数据失败', e)
+    console.error('加载趋势数据失败', e);
   }
 }
 
 async function loadRecentMerchants() {
   try {
-    const res = await adminApi.getMerchants({ page: 1, limit: 5 })
-    recentMerchants.value = res.list || []
+    const res: any = await adminApi.getMerchants({ page: 1, limit: 5 });
+    recentMerchants.value = res.list || [];
   } catch (e) {
-    console.error('加载商家列表失败', e)
+    console.error('加载商家列表失败', e);
   }
 }
 
 function changeDays(d: number) {
-  days.value = d
-  loadTrend()
+  days.value = d;
+  loadTrend();
 }
 
 function formatMoney(amount: number) {
-  if (!amount) return '0.00'
-  return (amount / 100).toFixed(2)
+  if (!amount) return '0.00';
+  return (amount / 100).toFixed(2);
 }
 
 function formatDate(date: string) {
-  return new Date(date).toLocaleDateString('zh-CN')
+  return new Date(date).toLocaleDateString('zh-CN');
 }
 
 function formatDateShort(date: string) {
-  const d = new Date(date)
-  return `${d.getMonth() + 1}/${d.getDate()}`
+  const d = new Date(date);
+  return `${d.getMonth() + 1}/${d.getDate()}`;
 }
 
 function getBarHeight(value: number) {
-  if (!maxRevenue.value || !value) return 0
-  return (value / maxRevenue.value) * 100
+  if (!maxRevenue.value || !value) return 0;
+  return (value / maxRevenue.value) * 100;
 }
 
 function getPlanName(plan: string) {
@@ -150,9 +158,9 @@ function getPlanName(plan: string) {
     basic: '基础版',
     pro: '专业版',
     enterprise: '企业版',
-    banned: '已禁用'
-  }
-  return plans[plan] || plan || '免费版'
+    banned: '已禁用',
+  };
+  return plans[plan] || plan || '免费版';
 }
 </script>
 
@@ -311,9 +319,25 @@ function getPlanName(plan: string) {
   font-size: 12px;
 }
 
-.plan-free { background: #f5f5f5; color: #666; }
-.plan-basic { background: #e6f7ff; color: #1890ff; }
-.plan-pro, .plan-professional { background: #f6ffed; color: #52c41a; }
-.plan-enterprise { background: #fff7e6; color: #fa8c16; }
-.plan-banned { background: #fff1f0; color: #ff4d4f; }
+.plan-free {
+  background: #f5f5f5;
+  color: #666;
+}
+.plan-basic {
+  background: #e6f7ff;
+  color: #1890ff;
+}
+.plan-pro,
+.plan-professional {
+  background: #f6ffed;
+  color: #52c41a;
+}
+.plan-enterprise {
+  background: #fff7e6;
+  color: #fa8c16;
+}
+.plan-banned {
+  background: #fff1f0;
+  color: #ff4d4f;
+}
 </style>

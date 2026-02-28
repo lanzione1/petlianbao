@@ -1,5 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
-import { useAdminStore } from '@/stores/admin'
+import { createRouter, createWebHashHistory } from 'vue-router';
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -67,23 +66,23 @@ const router = createRouter({
       ],
     },
   ],
-})
+});
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
   if (to.path === '/vue-test' || to.path === '/full-test') {
-    next()
-    return
+    next();
+    return;
   }
-  
-  const hasToken = !!localStorage.getItem('admin_token')
-  
-  if (to.path !== '/login' && !hasToken) {
-    next('/login')
-  } else if (to.path === '/login' && hasToken) {
-    next('/dashboard')
-  } else {
-    next()
-  }
-})
 
-export default router
+  const hasToken = !!localStorage.getItem('admin_token');
+
+  if (to.path !== '/login' && !hasToken) {
+    next('/login');
+  } else if (to.path === '/login' && hasToken) {
+    next('/dashboard');
+  } else {
+    next();
+  }
+});
+
+export default router;

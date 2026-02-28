@@ -106,6 +106,17 @@ export const adminApi = {
   deletePackage: (id: string) => api.delete(`/admin/packages/${id}`),
   updatePackageStatus: (id: string, status: string) =>
     api.put(`/admin/packages/${id}/status`, { status }),
+
+  // 提现管理
+  getWithdrawalList: (params?: {
+    page?: number;
+    limit?: number;
+    status?: string;
+    merchantId?: string;
+  }) => api.get('/admin/withdrawals', { params }),
+  getWithdrawalStats: () => api.get('/admin/withdrawals/stats'),
+  processWithdrawal: (id: string, status: string, transactionNo: string, remark: string) =>
+    api.put(`/admin/withdrawals/${id}/process`, { status, transactionNo, remark }),
 };
 
 export default api;
