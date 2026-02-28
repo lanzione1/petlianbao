@@ -1,7 +1,9 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 
+const base = import.meta.env.BASE_URL;
+
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHashHistory(base),
   routes: [
     {
       path: '/full-test',
