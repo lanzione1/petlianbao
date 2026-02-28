@@ -86,8 +86,16 @@ import { NotificationModule } from './modules/notification/notification.module';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => {
         const nodeEnv = configService.get('nodeEnv');
-        const baseConfig = {
-          type: 'postgres' as const,
+        const dbType = configService.get('database.type') || 'mysql';
+        
+        console.log('[TypeORM] Database type:', dbType);
+        console.log('[TypeORM] Database host:', configService.get('database.host'));
+        console.log('[TypeORM] Database port:', configService.get('database.port'));
+        console.log('[TypeORM] Database username:', configService.get('database.username'));
+        console.log('[TypeORM] Database name:', configService.get('database.database'));
+        
+        const baseConfig: any = {
+          type: dbType,
           host: configService.get('database.host'),
           port: configService.get('database.port'),
           username: configService.get('database.username'),
@@ -99,13 +107,15 @@ import { NotificationModule } from './modules/notification/notification.module';
           autoLoadEntities: true,
         };
 
-        // SSL 配置 (Supabase 需要)
-        if (configService.get('database.ssl')) {
-          Object.assign(baseConfig, {
-            ssl: {
+        // 对于 MySQL，不需要显式设置 driver，TypeORM 会自动加载 mysql2
+        // 对于 PostgreSQL，需要显式设置 driver 为 pg
+        if (dbType === 'postgres') {
+          baseConfig.driver = require('pg');
+          if (configService.get('database.ssl')) {
+            baseConfig.ssl = {
               rejectUnauthorized: configService.get('database.sslRejectUnauthorized'),
-            },
-          });
+            };
+          }
         }
 
         return baseConfig;
