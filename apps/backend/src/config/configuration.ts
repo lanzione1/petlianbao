@@ -1,13 +1,26 @@
+// 解析微信云托管 MYSQL_ADDRESS 环境变量 (格式: host:port)
+function parseMysqlAddress(address: string | undefined): { host: string; port: string } {
+  if (!address) {
+    return { host: '', port: '' };
+  }
+  const parts = address.split(':');
+  return {
+    host: parts[0] || '',
+    port: parts[1] || '',
+  };
+}
+
 export default () => ({
   port: parseInt(process.env.PORT || '3000', 10),
   database: {
     type: process.env.DATABASE_TYPE || 'mysql',
     // 优先使用自定义配置，其次使用微信云托管自动注入的 MySQL 环境变量
-    host: process.env.DATABASE_HOST || process.env.MYSQL_HOST || 'localhost',
-    port: parseInt(process.env.DATABASE_PORT || process.env.MYSQL_PORT || '3306', 10),
-    username: process.env.DATABASE_USER || process.env.MYSQL_USERNAME || process.env.MYSQL_USER || 'root',
+    // 微信云托管使用 MYSQL_ADDRESS (格式: host:port)，需要解析
+    host: process.env.DATABASE_HOST || parseMysqlAddress(process.env.MYSQL_ADDRESS).host || 'localhost',
+    port: parseInt(process.env.DATABASE_PORT || parseMysqlAddress(process.env.MYSQL_ADDRESS).port || '3306', 10),
+    username: process.env.DATABASE_USER || process.env.MYSQL_USERNAME || 'root',
     password: process.env.DATABASE_PASSWORD || process.env.MYSQL_PASSWORD || '',
-    database: process.env.DATABASE_NAME || process.env.MYSQL_DATABASE || 'petlianbao',
+    database: process.env.DATABASE_NAME || 'petlianbao',
     ssl: process.env.DATABASE_SSL === 'true',
     sslRejectUnauthorized: process.env.DATABASE_SSL_REJECT_UNAUTHORIZED !== 'false',
   },
