@@ -100,10 +100,8 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue';
-import { useRouter } from 'vue-router';
 import { useAdminStore } from '@/stores/admin';
 
-const router = useRouter();
 const store = useAdminStore();
 
 const loading = ref(false);
