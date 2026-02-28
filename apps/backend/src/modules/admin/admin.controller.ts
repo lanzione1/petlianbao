@@ -52,7 +52,7 @@ export class AdminController {
     return { success: true, message: 'Super admin initialized' };
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('admin-jwt'))
   @Get('merchants')
   async getMerchants(
     @Request() req,
@@ -69,37 +69,37 @@ export class AdminController {
     });
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('admin-jwt'))
   @Get('merchants/stats')
   async getMerchantStats() {
     return this.adminService.getMerchantStats();
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('admin-jwt'))
   @Get('merchants/:id')
   async getMerchantDetail(@Param('id') id: string) {
     return this.adminService.getMerchantDetail(id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('admin-jwt'))
   @Put('merchants/:id/approve')
   async approveMerchant(@Param('id') id: string) {
     return this.adminService.approveMerchant(id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('admin-jwt'))
   @Put('merchants/:id/ban')
   async banMerchant(@Param('id') id: string, @Body('reason') reason: string) {
     return this.adminService.banMerchant(id, reason);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('admin-jwt'))
   @Put('merchants/:id/unban')
   async unbanMerchant(@Param('id') id: string) {
     return this.adminService.unbanMerchant(id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('admin-jwt'))
   @Put('merchants/:id/plan')
   async updateMerchantPlan(
     @Param('id') id: string,
@@ -109,25 +109,25 @@ export class AdminController {
     return this.adminService.updateMerchantPlan(id, planType, expiredAt);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('admin-jwt'))
   @Post('admins')
   async createAdmin(@Body() dto: CreateAdminDto) {
     return this.adminService.createAdmin(dto);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('admin-jwt'))
   @Get('platform/stats')
   async getPlatformStats() {
     return this.adminService.getPlatformStats();
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('admin-jwt'))
   @Get('platform/trend')
   async getPlatformTrend(@Query('days') days?: string) {
     return this.adminService.getPlatformTrend(Number(days) || 7);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('admin-jwt'))
   @Get('revenue/stats')
   async getRevenueStats(
     @Query('startDate') startDate?: string,
@@ -136,13 +136,13 @@ export class AdminController {
     return this.adminService.getRevenueStats(startDate, endDate);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('admin-jwt'))
   @Get('ranking')
   async getMerchantRanking(@Query('type') type?: string, @Query('limit') limit?: string) {
     return this.adminService.getMerchantRanking(type || 'revenue', Number(limit) || 20);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('admin-jwt'))
   @Get('logs')
   async getLogs(
     @Query('page') page?: string,
@@ -160,7 +160,7 @@ export class AdminController {
     });
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('admin-jwt'))
   @Get('media')
   async getMediaList(
     @Query('page') page?: string,
@@ -178,19 +178,19 @@ export class AdminController {
     });
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('admin-jwt'))
   @Get('media/stats')
   async getMediaStats() {
     return this.adminService.getMediaStats();
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('admin-jwt'))
   @Delete('media/:id')
   async deleteMedia(@Param('id') id: string) {
     return this.adminService.deleteMedia(id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('admin-jwt'))
   @Get('withdrawals')
   async getWithdrawalList(
     @Query('page') page?: string,
@@ -206,13 +206,13 @@ export class AdminController {
     });
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('admin-jwt'))
   @Get('withdrawals/stats')
   async getWithdrawalStats() {
     return this.adminService.getWithdrawalStats();
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('admin-jwt'))
   @Put('withdrawals/:id/process')
   async processWithdrawal(
     @Param('id') id: string,
@@ -231,19 +231,19 @@ export class AdminController {
   }
 
   // Package Management
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('admin-jwt'))
   @Get('packages')
   async getPackages() {
     return this.adminService.getPackages();
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('admin-jwt'))
   @Get('packages/:id')
   async getPackage(@Param('id') id: string) {
     return this.adminService.getPackage(id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('admin-jwt'))
   @Post('packages')
   async createPackage(
     @Body()
@@ -258,7 +258,7 @@ export class AdminController {
     return this.adminService.createPackage(dto);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('admin-jwt'))
   @Put('packages/:id')
   async updatePackage(
     @Param('id') id: string,
@@ -275,13 +275,13 @@ export class AdminController {
     return this.adminService.updatePackage(id, dto);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('admin-jwt'))
   @Delete('packages/:id')
   async deletePackage(@Param('id') id: string) {
     return this.adminService.deletePackage(id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('admin-jwt'))
   @Put('packages/:id/status')
   async updatePackageStatus(@Param('id') id: string, @Body('status') status: string) {
     return this.adminService.updatePackageStatus(id, status);
