@@ -4,7 +4,7 @@ App({
     token: null,
     merchantId: null,
     merchant: null,
-    apiBase: 'http://localhost:3000/api/v1',
+    apiBase: 'https://petllb-228231-9-1406143649.sh.run.tcloudbase.com/api/v1',
     loginPromise: null,
     // 客户选择模式相关
     selectCustomerMode: false,
