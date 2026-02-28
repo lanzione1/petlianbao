@@ -1,0 +1,85 @@
+.container {
+  padding: 30rpx;
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 40rpx;
+}
+
+.title {
+  display: block;
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.subtitle {
+  display: block;
+  font-size: 26rpx;
+  color: #999;
+  margin-top: 10rpx;
+}
+
+.log-list {
+  background: #fff;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
+.loading, .empty {
+  padding: 60rpx;
+  text-align: center;
+  color: #999;
+}
+
+.log-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 24rpx 30rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.log-item:last-child {
+  border-bottom: none;
+}
+
+.log-content {
+  flex: 1;
+}
+
+.staff-name {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+  margin-right: 12rpx;
+}
+
+.action {
+  font-size: 28rpx;
+  color: #667eea;
+}
+
+.detail {
+  display: block;
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 6rpx;
+}
+
+.time {
+  font-size: 24rpx;
+  color: #999;
+  white-space: nowrap;
+  margin-left: 20rpx;
+}
+
+.load-more {
+  padding: 30rpx;
+  text-align: center;
+  color: #999;
+  font-size: 26rpx;
+}

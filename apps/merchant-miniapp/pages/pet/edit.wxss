@@ -1,0 +1,256 @@
+/* ============================================
+   宠物编辑页 - iOS 极简风格
+   ============================================ */
+
+.container {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* 分区 */
+.form-section {
+  padding: 0 var(--spacing-lg);
+}
+
+/* 宠物照片 */
+.photo-area {
+  margin-bottom: var(--spacing-sm);
+}
+
+.photo-preview {
+  position: relative;
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.photo-img {
+  width: 100%;
+  height: 100%;
+}
+
+.photo-change {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+  color: #FFFFFF;
+  font-size: var(--font-xs);
+  text-align: center;
+  padding: 8rpx 0;
+}
+
+.photo-add {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: var(--radius-md);
+  border: 2rpx dashed var(--color-separator-opaque);
+  background-color: var(--color-card);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+}
+
+.photo-add-hover {
+  background-color: var(--color-fill);
+}
+
+.photo-add-icon {
+  font-size: 48rpx;
+  opacity: 0.5;
+}
+
+.photo-add-text {
+  font-size: var(--font-sm);
+  color: var(--color-tertiary-label);
+}
+
+.section-label {
+  font-size: var(--font-sm);
+  color: var(--color-tertiary-label);
+  text-transform: uppercase;
+  letter-spacing: 1rpx;
+  padding: var(--spacing-xl) 0 var(--spacing-sm) var(--spacing-xs);
+  display: block;
+}
+
+/* 表单卡片 */
+.form-card {
+  background-color: var(--color-card);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+/* 横向表单行 */
+.form-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--spacing-lg);
+  min-height: 96rpx;
+}
+
+.form-label {
+  font-size: var(--font-base);
+  color: var(--color-label);
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.form-label.required::after {
+  content: ' *';
+  color: var(--color-danger);
+  font-weight: 400;
+}
+
+.form-label-with-icon {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex-shrink: 0;
+}
+
+.label-icon {
+  font-size: var(--font-md);
+}
+
+.form-value {
+  flex: 1;
+  font-size: var(--font-base);
+  color: var(--color-label);
+  text-align: right;
+  height: 96rpx;
+  min-width: 0;
+}
+
+.form-placeholder {
+  color: var(--color-placeholder);
+}
+
+.input-with-unit {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.input-with-unit .form-value {
+  text-align: right;
+}
+
+.input-unit {
+  font-size: var(--font-sm);
+  color: var(--color-tertiary-label);
+  margin-left: 8rpx;
+  flex-shrink: 0;
+}
+
+/* Picker */
+.picker-value {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.picker-value text {
+  font-size: var(--font-base);
+  color: var(--color-label);
+}
+
+.picker-placeholder {
+  color: var(--color-placeholder) !important;
+}
+
+.picker-arrow {
+  font-size: var(--font-lg);
+  color: var(--color-placeholder);
+  font-weight: 300;
+}
+
+/* 块级表单行 */
+.form-row-block {
+  padding: var(--spacing-lg);
+}
+
+.form-label-block {
+  font-size: var(--font-base);
+  color: var(--color-label);
+  font-weight: 500;
+  margin-bottom: var(--spacing-sm);
+  display: block;
+}
+
+.form-textarea {
+  width: 100%;
+  min-height: 100rpx;
+  font-size: var(--font-base);
+  color: var(--color-label);
+  line-height: 1.6;
+  padding: 0;
+}
+
+/* 分割线 */
+.form-divider {
+  height: 1rpx;
+  background-color: var(--color-separator);
+  margin-left: var(--spacing-lg);
+}
+
+/* 按钮组 */
+.button-group {
+  padding: var(--spacing-xl) var(--spacing-lg) 0;
+}
+
+.btn-save {
+  width: 100%;
+  background-color: var(--color-primary);
+  color: #FFFFFF;
+  border: none;
+  border-radius: var(--radius-md);
+  height: 96rpx;
+  line-height: 96rpx;
+  font-size: var(--font-md);
+  font-weight: 600;
+  padding: 0;
+}
+
+.btn-save::after {
+  border: none;
+}
+
+.btn-save:active {
+  opacity: 0.8;
+}
+
+.btn-delete {
+  width: 100%;
+  background-color: rgba(255, 59, 48, 0.08);
+  color: var(--color-danger);
+  border: none;
+  border-radius: var(--radius-md);
+  height: 96rpx;
+  line-height: 96rpx;
+  font-size: var(--font-md);
+  font-weight: 600;
+  margin-top: var(--spacing-md);
+  padding: 0;
+}
+
+.btn-delete::after {
+  border: none;
+}
+
+.btn-delete:active {
+  opacity: 0.7;
+}
+
+/* 安全区 */
+.safe-bottom {
+  height: 60rpx;
+}

@@ -1,0 +1,162 @@
+/* ============================================
+   全局设计系统 - Apple iOS 风格
+   ============================================ */
+
+page {
+  --color-bg: #F2F2F7;
+  --color-card: #FFFFFF;
+  --color-primary: #007AFF;
+  --color-primary-light: rgba(0, 122, 255, 0.08);
+  --color-success: #34C759;
+  --color-warning: #FF9500;
+  --color-danger: #FF3B30;
+  --color-label: #1C1C1E;
+  --color-secondary-label: #3C3C43;
+  --color-tertiary-label: #8E8E93;
+  --color-placeholder: #C7C7CC;
+  --color-separator: rgba(60, 60, 67, 0.08);
+  --color-separator-opaque: #E5E5EA;
+  --color-grouped-bg: #F2F2F7;
+  --color-fill: rgba(120, 120, 128, 0.08);
+  --color-secondary-fill: rgba(120, 120, 128, 0.12);
+
+  --radius-sm: 12rpx;
+  --radius-md: 20rpx;
+  --radius-lg: 28rpx;
+  --radius-full: 999rpx;
+
+  --shadow-card: 0 1rpx 3rpx rgba(0, 0, 0, 0.04);
+  --shadow-elevated: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+  --shadow-float: 0 8rpx 32rpx rgba(0, 0, 0, 0.12);
+
+  --spacing-xs: 8rpx;
+  --spacing-sm: 16rpx;
+  --spacing-md: 24rpx;
+  --spacing-lg: 32rpx;
+  --spacing-xl: 40rpx;
+
+  --font-xs: 22rpx;
+  --font-sm: 24rpx;
+  --font-base: 28rpx;
+  --font-md: 30rpx;
+  --font-lg: 34rpx;
+  --font-xl: 40rpx;
+  --font-xxl: 48rpx;
+
+  background-color: var(--color-bg);
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+  font-size: var(--font-base);
+  color: var(--color-label);
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+}
+
+/* 通用卡片 */
+.card {
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  margin: 0 var(--spacing-lg);
+  overflow: hidden;
+}
+
+/* 通用分区标题 */
+.section-header {
+  font-size: var(--font-sm);
+  color: var(--color-tertiary-label);
+  text-transform: uppercase;
+  letter-spacing: 1rpx;
+  padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-sm);
+}
+
+/* 通用空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx var(--spacing-xl);
+}
+
+.empty-state .empty-icon {
+  font-size: 96rpx;
+  margin-bottom: var(--spacing-lg);
+  opacity: 0.3;
+}
+
+.empty-state .empty-text {
+  font-size: var(--font-base);
+  color: var(--color-tertiary-label);
+}
+
+/* 通用按钮 */
+button::after {
+  border: none;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: #FFFFFF;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 0;
+  height: 96rpx;
+  line-height: 96rpx;
+  font-size: var(--font-md);
+  font-weight: 600;
+  letter-spacing: 1rpx;
+}
+
+.btn-primary:active {
+  opacity: 0.8;
+}
+
+.btn-secondary {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 0;
+  height: 96rpx;
+  line-height: 96rpx;
+  font-size: var(--font-md);
+  font-weight: 600;
+}
+
+.btn-secondary:active {
+  opacity: 0.7;
+}
+
+.btn-danger {
+  background-color: rgba(255, 59, 48, 0.08);
+  color: var(--color-danger);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 0;
+  height: 96rpx;
+  line-height: 96rpx;
+  font-size: var(--font-md);
+  font-weight: 600;
+}
+
+.btn-danger:active {
+  opacity: 0.7;
+}
+
+/* 列表分割线 */
+.list-separator {
+  height: 1rpx;
+  background-color: var(--color-separator);
+  margin-left: var(--spacing-lg);
+}
+
+/* 加载状态 */
+.loading {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: var(--color-tertiary-label);
+  font-size: var(--font-sm);
+}

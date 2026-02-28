@@ -1,0 +1,136 @@
+<view class="container">
+  <view class="filter-bar">
+    <view class="filter-group">
+      <view class="filter-label">类型:</view>
+      <view class="filter-options">
+        <view 
+          wx:for="{{typeOptions}}" 
+          wx:key="value"
+          class="filter-option {{typeFilter === item.value ? 'active' : ''}}"
+          bindtap="onTypeFilter"
+          data-type="{{item.value}}">
+          {{item.label}}
+        </view>
+      </view>
+    </view>
+    <view class="filter-group">
+      <view class="filter-label">到期:</view>
+      <view class="filter-options">
+        <view 
+          wx:for="{{dayOptions}}" 
+          wx:key="value"
+          class="filter-option {{dayFilter === item.value ? 'active' : ''}}"
+          bindtap="onDayFilter"
+          data-days="{{item.value}}">
+          {{item.label}}
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="action-bar" wx:if="{{filteredReminders.length > 0}}">
+    <view class="selection-info">已选 {{selectedPets.length}} / {{filteredReminders.length}}</view>
+    <view class="action-btns">
+      <button size="mini" bindtap="selectAll">全选</button>
+      <button size="mini" bindtap="deselectAll">清空</button>
+      <button size="mini" type="primary" bindtap="openSendModal">发送提醒</button>
+      <button size="mini" bindtap="openTemplateModal">模板</button>
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="reminder-list">
+    <block wx:for="{{filteredReminders}}" wx:key="id">
+      <view 
+        class="reminder-card {{selectedPets.indexOf(item.id) > -1 ? 'selected' : ''}}"
+        bindtap="toggleSelect"
+        data-id="{{item.id}}">
+        <view class="card-check">
+          <checkbox checked="{{selectedPets.indexOf(item.id) > -1}}" />
+        </view>
+        <view class="card-content">
+          <view class="card-header">
+            <text class="pet-name">{{item.name}}</text>
+            <text class="reminder-type type-{{item.reminderType}}">{{getTypeLabel(item.reminderType)}}</text>
+          </view>
+          <view class="card-body">
+            <text class="customer-name">{{item.customer.name}}</text>
+            <text class="phone">{{item.customer.phone}}</text>
+          </view>
+          <view class="card-footer">
+            <text class="days-left {{item.daysLeft <= 1 ? 'urgent' : ''}}">{{getDaysText(item.daysLeft)}}</text>
+            <text class="reminder-date">{{item.reminderDate}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <view class="empty" wx:if="{{filteredReminders.length === 0 && !loading}}">
+      <text>暂无提醒</text>
+    </view>
+  </scroll-view>
+
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+</view>
+
+<view class="modal-mask" wx:if="{{showSendModal}}" bindtap="closeSendModal"></view>
+<view class="send-modal" wx:if="{{showSendModal}}">
+  <view class="modal-header">发送提醒</view>
+  <view class="modal-body">
+    <textarea 
+      class="message-input" 
+      placeholder="请输入提醒消息..." 
+      value="{{sendMessage}}"
+      bindinput="onMessageInput"
+      maxlength="200"></textarea>
+    <view class="message-tip">已选择 {{selectedPets.length}} 位客户</view>
+    <view class="template-tip">可用变量: {petName}</view>
+  </view>
+  <view class="modal-footer">
+    <button bindtap="closeSendModal">取消</button>
+    <button type="primary" bindtap="sendMessages">发送</button>
+  </view>
+</view>
+
+<view class="modal-mask" wx:if="{{showTemplateModal}}" bindtap="closeTemplateModal"></view>
+<view class="send-modal" wx:if="{{showTemplateModal}}">
+  <view class="modal-header">编辑消息模板</view>
+  <view class="modal-body">
+    <view class="template-field">
+      <view class="template-label">生日祝福:</view>
+      <textarea 
+        class="message-input" 
+        placeholder="生日模板"
+        value="{{editTemplates.birthdayTemplate}}"
+        bindinput="onTemplateInput"
+        data-type="birthdayTemplate"
+        maxlength="200"></textarea>
+    </view>
+    <view class="template-field">
+      <view class="template-label">疫苗提醒:</view>
+      <textarea 
+        class="message-input" 
+        placeholder="疫苗模板"
+        value="{{editTemplates.vaccineTemplate}}"
+        bindinput="onTemplateInput"
+        data-type="vaccineTemplate"
+        maxlength="200"></textarea>
+    </view>
+    <view class="template-field">
+      <view class="template-label">驱虫提醒:</view>
+      <textarea 
+        class="message-input" 
+        placeholder="驱虫模板"
+        value="{{editTemplates.dewormTemplate}}"
+        bindinput="onTemplateInput"
+        data-type="dewormTemplate"
+        maxlength="200"></textarea>
+    </view>
+    <view class="template-tip">可用变量: {petName}</view>
+  </view>
+  <view class="modal-footer">
+    <button bindtap="closeTemplateModal">取消</button>
+    <button type="primary" bindtap="saveTemplates">保存</button>
+  </view>
+</view>

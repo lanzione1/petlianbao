@@ -1,0 +1,28 @@
+<view class="qrcode-page">
+  <view class="header">
+    <text class="title">预约二维码</text>
+    <text class="subtitle">客户扫码即可预约服务</text>
+  </view>
+
+  <view class="qrcode-box">
+    <view class="qrcode-placeholder">
+      <text class="qrcode-text">二维码</text>
+      <text class="qrcode-tip">请使用微信小程序二维码生成工具</text>
+    </view>
+  </view>
+
+  <view class="link-box">
+    <text class="label">预约链接</text>
+    <view class="link-content">
+      <text class="link">{{ qrcodeUrl }}</text>
+    </view>
+    <button class="btn-copy" bindtap="copyLink">复制链接</button>
+  </view>
+
+  <view class="tips">
+    <text class="tip-title">使用说明</text>
+    <text class="tip-item">1. 将二维码打印张贴在店铺</text>
+    <text class="tip-item">2. 客户扫码后选择服务预约</text>
+    <text class="tip-item">3. 可将链接发送给微信好友</text>
+  </view>
+</view>

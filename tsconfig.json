@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "lib": ["ES2020"],
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "paths": {
+      "@petlianbao/types": ["packages/types/src"],
+      "@petlianbao/utils": ["packages/utils/src"]
+    }
+  },
+  "references": [
+    { "path": "./apps/backend" },
+    { "path": "./packages/types" },
+    { "path": "./packages/utils" }
+  ],
+  "exclude": ["node_modules", "dist", "apps/merchant-miniapp", "apps/customer-h5"]
+}

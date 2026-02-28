@@ -1,0 +1,108 @@
+<view class="container">
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 内容区域 -->
+  <block wx:else>
+    <!-- 状态卡片 -->
+    <view class="status-card status-{{appointment.status}}">
+      <view class="status-icon">{{statusIcon[appointment.status]}}</view>
+      <view class="status-text">{{statusText[appointment.status]}}</view>
+      <view class="status-time">{{formatDateTime(appointment.appointmentTime)}}</view>
+    </view>
+
+    <!-- 客户信息 -->
+    <view class="section">
+      <view class="section-title">客户信息</view>
+      <view class="info-card">
+        <view class="info-row">
+          <text class="label">宠物昵称</text>
+          <text class="value">{{appointment.customer.petName}}</text>
+          <view class="tags" wx:if="{{appointment.customer.tags && appointment.customer.tags.length > 0}}">
+            <text class="tag" wx:for="{{appointment.customer.tags}}" wx:key="index">{{item}}</text>
+          </view>
+        </view>
+        <view class="info-row" wx:if="{{appointment.customer.petBreed}}">
+          <text class="label">宠物品种</text>
+          <text class="value">{{appointment.customer.petBreed}}</text>
+        </view>
+        <view class="info-row" bindtap="callCustomer" wx:if="{{appointment.customer.phone}}">
+          <text class="label">联系电话</text>
+          <text class="value phone">{{appointment.customer.phone}}</text>
+          <text class="call-icon">📞</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 宠物信息 -->
+    <view class="section" wx:if="{{appointment.pets && appointment.pets.length > 0}}">
+      <view class="section-title">宠物信息</view>
+      <view class="pet-list">
+        <view class="pet-card" wx:for="{{appointment.pets}}" wx:key="id">
+          <view class="pet-avatar" style="background: #f0f3ff; display: flex; align-items: center; justify-content: center;">
+            <text style="font-size: 48rpx;">{{item.species === 'dog' ? '🐕' : item.species === 'cat' ? '🐱' : '🐾'}}</text>
+          </view>
+          <view class="pet-info">
+            <view class="pet-name">{{item.name}}</view>
+            <view class="pet-meta">
+              <text>{{item.species === 'dog' ? '🐕 狗狗' : item.species === 'cat' ? '🐱 猫咪' : '🐾 其他'}}</text>
+              <text wx:if="{{item.breed}}">· {{item.breed}}</text>
+              <text wx:if="{{item.weight}}">· {{item.weight}}kg</text>
+            </view>
+            <view class="pet-tags" wx:if="{{item.allergy || item.behavior}}">
+              <text class="pet-tag warning" wx:if="{{item.allergy}}">⚠️ 过敏</text>
+              <text class="pet-tag info" wx:if="{{item.behavior}}">性格: {{item.behavior}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 服务信息 -->
+    <view class="section">
+      <view class="section-title">服务信息</view>
+      <view class="info-card">
+        <view class="info-row">
+          <text class="label">服务项目</text>
+          <text class="value">{{appointment.service.name}}</text>
+        </view>
+        <view class="info-row">
+          <text class="label">服务价格</text>
+          <text class="value price">¥{{appointment.service.price}}</text>
+        </view>
+        <view class="info-row" wx:if="{{appointment.service.duration}}">
+          <text class="label">预计时长</text>
+          <text class="value">{{appointment.service.duration}}分钟</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 备注信息 -->
+    <view class="section" wx:if="{{appointment.notes}}">
+      <view class="section-title">备注</view>
+      <view class="notes-card">
+        <text>{{appointment.notes}}</text>
+      </view>
+    </view>
+
+    <!-- 历史记录 -->
+    <view class="section" wx:if="{{history.length > 0}}">
+      <view class="section-title">历史服务记录</view>
+      <view class="history-list">
+        <view class="history-item" wx:for="{{history}}" wx:key="id">
+          <view class="history-date">{{formatDate(item.createdAt)}}</view>
+          <view class="history-service">{{item.serviceName}}</view>
+          <view class="history-amount">¥{{item.amount}}</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部操作栏 -->
+    <view class="action-bar" wx:if="{{appointment.status === 'pending'}}">
+      <button class="btn-cancel" bindtap="cancelAppointment">取消预约</button>
+      <button class="btn-complete" type="primary" bindtap="completeService">完成服务</button>
+    </view>
+  </block>
+</view>

@@ -1,0 +1,82 @@
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-section">
+    <view class="search-bar">
+      <text class="search-icon-text">🔍</text>
+      <input 
+        type="text" 
+        placeholder="搜索客户姓名或手机号" 
+        placeholder-class="search-placeholder"
+        value="{{searchText}}"
+        bindinput="onSearch"
+        confirm-type="search"
+      />
+      <view class="search-clear" wx:if="{{searchText}}" bindtap="clearSearch">
+        <text class="clear-icon">×</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 筛选标签 -->
+  <view class="filter-bar">
+    <view class="filter-pill {{filter === 'all' ? 'active' : ''}}" bindtap="switchFilter" data-filter="all">
+      <text>全部客户</text>
+    </view>
+    <view class="filter-pill {{filter === 'inactive' ? 'active' : ''}}" bindtap="switchFilter" data-filter="inactive">
+      <text>流失客户</text>
+    </view>
+  </view>
+
+  <!-- 客户列表 -->
+  <scroll-view scroll-y class="customer-list" enhanced show-scrollbar="{{false}}">
+    <view class="list-content">
+      <block wx:for="{{customers}}" wx:key="id">
+        <view class="customer-card" bindtap="goDetail" data-id="{{item.id}}" hover-class="card-hover">
+          <!-- 头像与基本信息 -->
+          <view class="card-left">
+            <view class="avatar">
+              <text class="avatar-text">{{item.petName ? item.petName[0] : '?'}}</text>
+            </view>
+            <view class="card-info">
+              <view class="card-name-row">
+                <text class="customer-name">{{item.petName || '未设置姓名'}}</text>
+                <text class="gender-icon" wx:if="{{item.gender === 'male'}}">♂</text>
+                <text class="gender-icon female" wx:if="{{item.gender === 'female'}}">♀</text>
+              </view>
+              <text class="customer-phone">{{item.phone || '无电话'}}</text>
+            </view>
+          </view>
+          <!-- 右侧统计 -->
+          <view class="card-right">
+            <text class="card-amount">¥{{item.totalSpent || 0}}</text>
+            <view class="card-meta">
+              <text class="meta-text">{{item.petCount || 0}}宠物</text>
+              <text class="meta-dot">·</text>
+              <text class="meta-text">{{item.visitCount || 0}}次</text>
+            </view>
+          </view>
+          <!-- 箭头 -->
+          <view class="card-arrow">
+            <text class="arrow-icon">›</text>
+          </view>
+        </view>
+        <view class="card-separator" wx:if="{{index < customers.length - 1}}"></view>
+      </block>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{customers.length === 0}}">
+      <text class="empty-icon">👤</text>
+      <text class="empty-text">暂无客户</text>
+      <text class="empty-hint" wx:if="{{!selectMode}}">点击右下角按钮添加第一位客户</text>
+      <text class="empty-hint" wx:else>请先添加客户</text>
+    </view>
+  </scroll-view>
+
+  <!-- 浮动添加按钮（非选择模式显示） -->
+  <view class="fab-wrapper" bindtap="addCustomer" hover-class="fab-hover" wx:if="{{!selectMode}}">
+    <view class="fab">
+      <text class="fab-icon">+</text>
+    </view>
+  </view>
+</view>

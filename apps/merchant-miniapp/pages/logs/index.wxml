@@ -1,0 +1,23 @@
+<view class="container">
+  <view class="header">
+    <text class="title">操作日志</text>
+    <text class="subtitle">查看所有操作记录</text>
+  </view>
+
+  <view class="log-list">
+    <view wx:if="{{loading}}" class="loading">加载中...</view>
+    <view wx:elif="{{logs.length === 0}}" class="empty">暂无操作记录</view>
+    <view wx:else>
+      <view class="log-item" wx:for="{{logs}}" wx:key="id">
+        <view class="log-content">
+          <text class="staff-name">{{item.staffName}}</text>
+          <text class="action">{{item.actionText}}</text>
+          <text wx:if="{{item.detail}}" class="detail">{{item.detail}}</text>
+        </view>
+        <text class="time">{{item.time}}</text>
+      </view>
+      
+      <view wx:if="{{hasMore}}" class="load-more">加载更多...</view>
+    </view>
+  </view>
+</view>

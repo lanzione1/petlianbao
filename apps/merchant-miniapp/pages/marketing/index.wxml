@@ -1,0 +1,48 @@
+<view class="container">
+  <view class="tools-grid">
+    <view class="tool-card" bindtap="goPoster">
+      <view class="icon">🎉</view>
+      <text class="name">节日海报</text>
+    </view>
+    <view class="tool-card" bindtap="goCoupon">
+      <view class="icon">🎫</view>
+      <text class="name">优惠券</text>
+    </view>
+    <view class="tool-card" bindtap="goBirthday">
+      <view class="icon">🎂</view>
+      <text class="name">生日祝福</text>
+    </view>
+    <view class="tool-card" bindtap="goBroadcast">
+      <view class="icon">📢</view>
+      <text class="name">群发消息</text>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-header">
+      <text class="title">自动营销</text>
+    </view>
+    <view class="rule-item">
+      <text>30天未到店自动唤醒</text>
+      <switch checked="{{autoRules.inactiveReminder}}" bindchange="toggleRule" data-rule="inactiveReminder"/>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-header">
+      <text class="title">最近活动</text>
+    </view>
+    <view class="campaign-list">
+      <view class="campaign-item" wx:for="{{campaigns}}" wx:key="id">
+        <view class="campaign-info">
+          <text class="campaign-title">{{item.title}}</text>
+          <text class="campaign-date">{{item.createdAtText}}</text>
+        </view>
+        <text class="campaign-count">已发送 {{item.sentCount}} 人</text>
+      </view>
+      <view class="empty" wx:if="{{campaigns.length === 0}}">
+        <text>暂无活动</text>
+      </view>
+    </view>
+  </view>
+</view>

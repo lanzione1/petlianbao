@@ -1,0 +1,257 @@
+.container {
+  min-height: 100vh;
+  background: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-bar {
+  background: white;
+  padding: 20rpx;
+  border-bottom: 1rpx solid #eee;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.filter-group:last-child {
+  margin-bottom: 0;
+}
+
+.filter-label {
+  font-size: 26rpx;
+  color: #666;
+  width: 80rpx;
+}
+
+.filter-options {
+  display: flex;
+  gap: 16rpx;
+  flex: 1;
+}
+
+.filter-option {
+  padding: 8rpx 24rpx;
+  font-size: 24rpx;
+  color: #666;
+  background: #f5f5f5;
+  border-radius: 8rpx;
+}
+
+.filter-option.active {
+  color: white;
+  background: #667eea;
+}
+
+.action-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  padding: 16rpx 20rpx;
+  border-bottom: 1rpx solid #eee;
+}
+
+.selection-info {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.action-btns {
+  display: flex;
+  gap: 16rpx;
+}
+
+.reminder-list {
+  flex: 1;
+  padding: 20rpx;
+}
+
+.reminder-card {
+  display: flex;
+  background: white;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  margin-bottom: 16rpx;
+  border: 2rpx solid transparent;
+}
+
+.reminder-card.selected {
+  border-color: #667eea;
+  background: #f0f3ff;
+}
+
+.card-check {
+  display: flex;
+  align-items: center;
+  margin-right: 16rpx;
+}
+
+.card-content {
+  flex: 1;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12rpx;
+}
+
+.pet-name {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #333;
+}
+
+.reminder-type {
+  padding: 4rpx 16rpx;
+  font-size: 22rpx;
+  border-radius: 8rpx;
+}
+
+.type-birthday {
+  background: #fff7e6;
+  color: #fa8c16;
+}
+
+.type-vaccine {
+  background: #e6f7ff;
+  color: #1890ff;
+}
+
+.type-deworm {
+  background: #f6ffed;
+  color: #52c41a;
+}
+
+.card-body {
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: 12rpx;
+}
+
+.customer-name {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.phone {
+  font-size: 26rpx;
+  color: #999;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.days-left {
+  font-size: 26rpx;
+  color: #667eea;
+  font-weight: 500;
+}
+
+.days-left.urgent {
+  color: #ff4d4f;
+}
+
+.reminder-date {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.empty {
+  text-align: center;
+  padding: 100rpx 0;
+  color: #999;
+}
+
+.loading {
+  text-align: center;
+  padding: 40rpx;
+  color: #999;
+}
+
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+
+.send-modal {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: 24rpx 24rpx 0 0;
+  z-index: 101;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.modal-header {
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: 500;
+  padding: 30rpx;
+  border-bottom: 1rpx solid #eee;
+}
+
+.modal-body {
+  padding: 30rpx;
+}
+
+.message-input {
+  width: 100%;
+  height: 200rpx;
+  padding: 20rpx;
+  border: 1rpx solid #ddd;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+
+.message-tip {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 16rpx;
+}
+
+.template-tip {
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 12rpx;
+}
+
+.template-field {
+  margin-bottom: 20rpx;
+}
+
+.template-label {
+  font-size: 26rpx;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.template-field .message-input {
+  height: 120rpx;
+}
+
+.modal-footer {
+  display: flex;
+  padding: 20rpx 30rpx;
+  gap: 20rpx;
+  border-top: 1rpx solid #eee;
+}
+
+.modal-footer button {
+  flex: 1;
+}

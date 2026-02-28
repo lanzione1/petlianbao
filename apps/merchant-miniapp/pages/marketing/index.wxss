@@ -1,0 +1,82 @@
+.container {
+  padding: 20rpx;
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20rpx;
+  margin-bottom: 30rpx;
+}
+
+.tool-card {
+  background: white;
+  border-radius: 16rpx;
+  padding: 40rpx;
+  text-align: center;
+}
+
+.tool-card .icon {
+  font-size: 60rpx;
+  margin-bottom: 16rpx;
+}
+
+.tool-card .name {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.section {
+  background: white;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+}
+
+.section-header {
+  margin-bottom: 20rpx;
+}
+
+.section-header .title {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #333;
+}
+
+.rule-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16rpx 0;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.campaign-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.campaign-info .campaign-title {
+  display: block;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.campaign-info .campaign-date {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.campaign-count {
+  font-size: 24rpx;
+  color: #667eea;
+}
+
+.empty {
+  text-align: center;
+  padding: 40rpx 0;
+  color: #999;
+}

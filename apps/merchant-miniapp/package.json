@@ -1,0 +1,14 @@
+{
+  "name": "@petlianbao/merchant-miniapp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "宠联宝商家端小程序",
+  "scripts": {
+    "dev": "echo '请使用微信开发者工具打开此目录'"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "miniprogram-api-typings": "^3.12.2",
+    "typescript": "^5.3.3"
+  }
+}

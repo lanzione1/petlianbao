@@ -1,0 +1,5 @@
+**/*.entity.ts
+**/*.dto.ts
+**/*.module.ts
+dist/
+node_modules/

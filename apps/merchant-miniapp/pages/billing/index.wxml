@@ -1,0 +1,68 @@
+<view class="container">
+  <view class="section">
+    <view class="section-title">选择客户</view>
+    <view class="customer-select" bindtap="selectCustomer">
+      <text wx:if="{{selectedCustomer}}">{{selectedCustomer.petName}} ({{selectedCustomer.phone || '无电话'}})</text>
+      <text wx:else class="placeholder">请选择客户</text>
+      <text class="arrow">></text>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">选择服务</view>
+    <view class="service-list">
+      <view class="service-item" wx:for="{{services}}" wx:key="id" bindtap="toggleService" data-id="{{item.id}}">
+        <view class="checkbox {{selectedServices[item.id] ? 'checked' : ''}}">
+          <text wx:if="{{selectedServices[item.id]}}">✓</text>
+        </view>
+        <view class="service-info">
+          <text class="name">{{item.name}}</text>
+          <text class="price">¥{{item.price}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="section" wx:if="{{customItems.length > 0}}">
+    <view class="section-title">自定义项目</view>
+    <view class="custom-item" wx:for="{{customItems}}" wx:key="index">
+      <input placeholder="项目名称" value="{{item.name}}" bindinput="updateCustomName" data-index="{{index}}" />
+      <input type="digit" placeholder="金额" value="{{item.price}}" bindinput="updateCustomPrice" data-index="{{index}}" />
+      <view class="remove" bindtap="removeCustomItem" data-index="{{index}}">×</view>
+    </view>
+  </view>
+
+  <view class="add-custom" bindtap="addCustomItem">+ 添加自定义项目</view>
+
+  <view class="total-section">
+    <text class="label">合计</text>
+    <text class="amount">¥{{totalAmount}}</text>
+  </view>
+
+  <view class="section">
+    <view class="section-title">支付方式</view>
+    <view class="payment-methods">
+      <view 
+        class="method {{paymentMethod === 'wechat' ? 'active' : ''}}" 
+        bindtap="selectPayment" 
+        data-method="wechat"
+      >微信</view>
+      <view 
+        class="method {{paymentMethod === 'alipay' ? 'active' : ''}}" 
+        bindtap="selectPayment" 
+        data-method="alipay"
+      >支付宝</view>
+      <view 
+        class="method {{paymentMethod === 'cash' ? 'active' : ''}}" 
+        bindtap="selectPayment" 
+        data-method="cash"
+      >现金</view>
+    </view>
+  </view>
+
+  <view class="submit-section">
+    <button class="submit-btn" bindtap="submitPayment" disabled="{{!canSubmit || loading}}">
+      {{loading ? '处理中...' : '确认收款 ¥' + totalAmount}}
+    </button>
+  </view>
+</view>

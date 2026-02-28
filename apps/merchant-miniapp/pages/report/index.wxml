@@ -1,0 +1,103 @@
+<view class="container">
+  <view class="tabs">
+    <view class="tab {{currentTab === 'daily' ? 'active' : ''}}" bindtap="switchTab" data-tab="daily">日报</view>
+    <view class="tab {{currentTab === 'monthly' ? 'active' : ''}}" bindtap="switchTab" data-tab="monthly">月报</view>
+    <view class="tab {{currentTab === 'customer' ? 'active' : ''}}" bindtap="switchTab" data-tab="customer">客户分析</view>
+  </view>
+
+  <scroll-view scroll-y class="content">
+    <!-- 日报 -->
+    <view wx:if="{{currentTab === 'daily'}}" class="panel">
+      <view class="date-picker">
+        <picker mode="date" value="{{dailyDate}}" bindchange="onDailyDateChange">
+          <view class="picker-btn">{{dailyDate}} ▼</view>
+        </picker>
+      </view>
+      <view class="stats-card">
+        <view class="stats-main">
+          <text class="stats-value">¥{{dailyReport.totalRevenue || 0}}</text>
+          <text class="stats-label">总营业额</text>
+        </view>
+        <view class="stats-row">
+          <view class="stats-item">
+            <text class="stats-value">{{dailyReport.orderCount || 0}}</text>
+            <text class="stats-label">订单数</text>
+          </view>
+          <view class="stats-item">
+            <text class="stats-value">¥{{dailyReport.avgPrice || 0}}</text>
+            <text class="stats-label">客单价</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 月报 -->
+    <view wx:if="{{currentTab === 'monthly'}}" class="panel">
+      <view class="date-picker">
+        <picker mode="date" fields="month" value="{{monthlyDate}}" bindchange="onMonthlyDateChange">
+          <view class="picker-btn">{{monthlyDate}} ▼</view>
+        </picker>
+      </view>
+      <view class="stats-card">
+        <view class="stats-main">
+          <text class="stats-value">¥{{monthlyReport.totalRevenue || 0}}</text>
+          <text class="stats-label">本月营业额</text>
+        </view>
+        <view class="stats-row">
+          <view class="stats-item">
+            <text class="stats-value">{{monthlyReport.orderCount || 0}}</text>
+            <text class="stats-label">订单数</text>
+          </view>
+          <view class="stats-item">
+            <text class="stats-value">¥{{monthlyReport.avgPrice || 0}}</text>
+            <text class="stats-label">客单价</text>
+          </view>
+        </view>
+      </view>
+      <view class="chart-section">
+        <text class="section-title">每日趋势</text>
+        <view class="chart-placeholder">
+          <view class="bar" wx:for="{{monthlyReport.dailyStats}}" wx:key="date" style="height: {{item.height}}%">
+            <text class="bar-value">¥{{item.revenue}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 客户分析 -->
+    <view wx:if="{{currentTab === 'customer'}}" class="panel">
+      <view class="stats-card">
+        <view class="stats-row three-col">
+          <view class="stats-item">
+            <text class="stats-value">{{customerReport.totalCustomers || 0}}</text>
+            <text class="stats-label">总客户</text>
+          </view>
+          <view class="stats-item">
+            <text class="stats-value green">{{customerReport.activeCustomers || 0}}</text>
+            <text class="stats-label">活跃客户</text>
+          </view>
+          <view class="stats-item">
+            <text class="stats-value red">{{customerReport.inactiveCustomers || 0}}</text>
+            <text class="stats-label">流失客户</text>
+          </view>
+        </view>
+      </view>
+      <view class="section">
+        <text class="section-title">消费排行 TOP10</text>
+        <view class="rank-list">
+          <view class="rank-item" wx:for="{{customerReport.topCustomers}}" wx:key="id">
+            <view class="rank-num">{{index + 1}}</view>
+            <view class="rank-info">
+              <text class="rank-name">{{item.petName}}</text>
+              <text class="rank-count">{{item.visitCount}}次</text>
+            </view>
+            <text class="rank-amount">¥{{item.totalSpent}}</text>
+          </view>
+          <view class="empty" wx:if="{{!customerReport.topCustomers || customerReport.topCustomers.length === 0}}">
+            <text>暂无数据</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

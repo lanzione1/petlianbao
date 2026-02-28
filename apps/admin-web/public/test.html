@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>前端测试</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .success { color: green; }
+        .error { color: red; }
+        .box { background: #f0f0f0; padding: 15px; margin: 10px 0; border-radius: 8px; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+        input { padding: 8px; font-size: 16px; width: 200px; }
+    </style>
+</head>
+<body>
+    <h1>宠联宝前端测试</h1>
+    
+    <div class="box">
+        <h3>1. 后端连接测试</h3>
+        <button onclick="testHealth()">测试后端健康状态</button>
+        <div id="health-result"></div>
+    </div>
+    
+    <div class="box">
+        <h3>2. 登录测试</h3>
+        <p>用户名: <input id="username" value="admin"></p>
+        <p>密码: <input id="password" type="password" value="admin123456"></p>
+        <button onclick="testLogin()">登录</button>
+        <div id="login-result"></div>
+    </div>
+    
+    <div class="box">
+        <h3>3. 获取平台数据</h3>
+        <button onclick="testPlatformStats()">获取平台统计</button>
+        <div id="stats-result"></div>
+    </div>
+    
+    <div class="box">
+        <h3>4. 当前Token</h3>
+        <div id="token-display"></div>
+        <button onclick="clearToken()">清除Token</button>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3000/api/v1';
+        
+        function updateTokenDisplay() {
+            const token = localStorage.getItem('admin_token');
+            document.getElementById('token-display').innerHTML = token 
+                ? '<span class="success">Token: ' + token.substring(0, 30) + '...</span>'
+                : '<span class="error">未设置Token</span>';
+        }
+        updateTokenDisplay();
+        
+        async function testHealth() {
+            const resultDiv = document.getElementById('health-result');
+            try {
+                const res = await fetch(API_BASE + '/health');
+                const data = await res.json();
+                resultDiv.innerHTML = '<span class="success">✓ 后端正常: ' + JSON.stringify(data) + '</span>';
+            } catch (e) {
+                resultDiv.innerHTML = '<span class="error">✗ 连接失败: ' + e.message + '</span>';
+            }
+        }
+        
+        async function testLogin() {
+            const resultDiv = document.getElementById('login-result');
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                resultDiv.innerHTML = '登录中...';
+                const res = await fetch(API_BASE + '/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await res.json();
+                
+                if (data.access_token) {
+                    localStorage.setItem('admin_token', data.access_token);
+                    resultDiv.innerHTML = '<span class="success">✓ 登录成功</span><br>Admin: ' + JSON.stringify(data.admin);
+                    updateTokenDisplay();
+                } else {
+                    resultDiv.innerHTML = '<span class="error">✗ 登录失败: ' + JSON.stringify(data) + '</span>';
+                }
+            } catch (e) {
+                resultDiv.innerHTML = '<span class="error">✗ 请求失败: ' + e.message + '</span>';
+            }
+        }
+        
+        async function testPlatformStats() {
+            const resultDiv = document.getElementById('stats-result');
+            const token = localStorage.getItem('admin_token');
+            
+            if (!token) {
+                resultDiv.innerHTML = '<span class="error">请先登录</span>';
+                return;
+            }
+            
+            try {
+                resultDiv.innerHTML = '获取中...';
+                const res = await fetch(API_BASE + '/admin/platform/stats', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                const data = await res.json();
+                
+                if (res.ok) {
+                    resultDiv.innerHTML = '<span class="success">✓ 获取成功</span><br><pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                } else {
+                    resultDiv.innerHTML = '<span class="error">✗ 获取失败: ' + JSON.stringify(data) + '</span>';
+                }
+            } catch (e) {
+                resultDiv.innerHTML = '<span class="error">✗ 请求失败: ' + e.message + '</span>';
+            }
+        }
+        
+        function clearToken() {
+            localStorage.removeItem('admin_token');
+            updateTokenDisplay();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<view class="container">
+  <!-- 宠物照片 -->
+  <view class="form-section">
+    <text class="section-label">宠物照片</text>
+    <view class="photo-area">
+      <view class="photo-preview" wx:if="{{form.photo}}" bindtap="choosePhoto">
+        <image src="{{photoFullUrl}}" mode="aspectFill" class="photo-img" />
+        <view class="photo-change">
+          <text>更换</text>
+        </view>
+      </view>
+      <view class="photo-add" wx:else bindtap="choosePhoto" hover-class="photo-add-hover">
+        <text class="photo-add-icon">📷</text>
+        <text class="photo-add-text">添加照片</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 基本信息 -->
+  <view class="form-section">
+    <text class="section-label">基本信息</text>
+    <view class="form-card">
+      <view class="form-row">
+        <text class="form-label required">名字</text>
+        <input 
+          class="form-value" 
+          data-field="name" 
+          value="{{form.name}}" 
+          bindinput="onInput" 
+          placeholder="请输入宠物名字" 
+          placeholder-class="form-placeholder"
+        />
+      </view>
+      <view class="form-divider"></view>
+      <view class="form-row">
+        <text class="form-label required">物种</text>
+        <picker bindchange="onSpeciesChange" value="{{speciesIndex}}" range="{{speciesOptions}}" range-key="label">
+          <view class="picker-value">
+            <text>{{speciesOptions[speciesIndex].label}}</text>
+            <text class="picker-arrow">›</text>
+          </view>
+        </picker>
+      </view>
+      <view class="form-divider"></view>
+      <view class="form-row">
+        <text class="form-label required">品种</text>
+        <input 
+          class="form-value" 
+          data-field="breed" 
+          value="{{form.breed}}" 
+          bindinput="onInput" 
+          placeholder="如：金毛、泰迪" 
+          placeholder-class="form-placeholder"
+        />
+      </view>
+      <view class="form-divider"></view>
+      <view class="form-row">
+        <text class="form-label required">体重</text>
+        <view class="input-with-unit">
+          <input 
+            class="form-value" 
+            data-field="weight" 
+            type="digit" 
+            value="{{form.weight}}" 
+            bindinput="onInput" 
+            placeholder="请输入体重" 
+            placeholder-class="form-placeholder"
+          />
+          <text class="input-unit">kg</text>
+        </view>
+      </view>
+      <view class="form-divider"></view>
+      <view class="form-row">
+        <text class="form-label">生日</text>
+        <picker mode="date" data-field="birthday" value="{{form.birthday}}" bindchange="onInput">
+          <view class="picker-value">
+            <text class="{{form.birthday ? '' : 'picker-placeholder'}}">{{form.birthday || '请选择生日'}}</text>
+            <text class="picker-arrow">›</text>
+          </view>
+        </picker>
+      </view>
+    </view>
+  </view>
+
+  <!-- 健康信息 -->
+  <view class="form-section">
+    <text class="section-label">健康与习惯</text>
+    <view class="form-card">
+      <view class="form-row-block">
+        <text class="form-label-block">饮食习惯</text>
+        <textarea 
+          class="form-textarea"
+          data-field="feeding" 
+          value="{{form.feeding}}" 
+          bindinput="onInput" 
+          placeholder="如：每天两次狗粮"
+          placeholder-class="form-placeholder"
+          auto-height
+          maxlength="200"
+        />
+      </view>
+      <view class="form-divider"></view>
+      <view class="form-row-block">
+        <text class="form-label-block">过敏史</text>
+        <textarea 
+          class="form-textarea"
+          data-field="allergy" 
+          value="{{form.allergy}}" 
+          bindinput="onInput" 
+          placeholder="如有过敏请注明"
+          placeholder-class="form-placeholder"
+          auto-height
+          maxlength="200"
+        />
+      </view>
+      <view class="form-divider"></view>
+      <view class="form-row-block">
+        <text class="form-label-block">行为特点</text>
+        <textarea 
+          class="form-textarea"
+          data-field="behavior" 
+          value="{{form.behavior}}" 
+          bindinput="onInput" 
+          placeholder="如：活泼、胆小"
+          placeholder-class="form-placeholder"
+          auto-height
+          maxlength="200"
+        />
+      </view>
+    </view>
+  </view>
+
+  <!-- 提醒日期 -->
+  <view class="form-section">
+    <text class="section-label">护理提醒</text>
+    <view class="form-card">
+      <view class="form-row">
+        <view class="form-label-with-icon">
+          <text class="label-icon">💉</text>
+          <text class="form-label">下次疫苗</text>
+        </view>
+        <picker mode="date" data-field="nextVaccineDate" value="{{form.nextVaccineDate}}" bindchange="onInput">
+          <view class="picker-value">
+            <text class="{{form.nextVaccineDate ? '' : 'picker-placeholder'}}">{{form.nextVaccineDate || '请选择日期'}}</text>
+            <text class="picker-arrow">›</text>
+          </view>
+        </picker>
+      </view>
+      <view class="form-divider"></view>
+      <view class="form-row">
+        <view class="form-label-with-icon">
+          <text class="label-icon">🛡️</text>
+          <text class="form-label">下次驱虫</text>
+        </view>
+        <picker mode="date" data-field="nextDewormDate" value="{{form.nextDewormDate}}" bindchange="onInput">
+          <view class="picker-value">
+            <text class="{{form.nextDewormDate ? '' : 'picker-placeholder'}}">{{form.nextDewormDate || '请选择日期'}}</text>
+            <text class="picker-arrow">›</text>
+          </view>
+        </picker>
+      </view>
+    </view>
+  </view>
+
+  <!-- 备注 -->
+  <view class="form-section">
+    <text class="section-label">备注</text>
+    <view class="form-card">
+      <view class="form-row-block">
+        <textarea 
+          class="form-textarea"
+          data-field="notes" 
+          value="{{form.notes}}" 
+          bindinput="onInput" 
+          placeholder="其他需要记录的信息"
+          placeholder-class="form-placeholder"
+          auto-height
+          maxlength="500"
+        />
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部操作 -->
+  <view class="button-group">
+    <button class="btn-save" bindtap="submit">保存</button>
+    <button class="btn-delete" wx:if="{{id}}" bindtap="deletePet">删除宠物</button>
+  </view>
+
+  <!-- 底部安全区 -->
+  <view class="safe-bottom"></view>
+</view>
