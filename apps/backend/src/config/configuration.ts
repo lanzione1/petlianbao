@@ -10,14 +10,58 @@ function parseMysqlAddress(address: string | undefined): { host: string; port: s
   };
 }
 
+// 获取数据库主机地址
+function getDatabaseHost(): string {
+  // 优先使用自定义配置
+  if (process.env.DATABASE_HOST) {
+    return process.env.DATABASE_HOST;
+  }
+  // 其次使用微信云托管自动注入的 MYSQL_ADDRESS
+  const mysqlAddress = process.env.MYSQL_ADDRESS;
+  if (mysqlAddress) {
+    const { host } = parseMysqlAddress(mysqlAddress);
+    if (host) {
+      console.log('[Config] Using MYSQL_ADDRESS host:', host);
+      return host;
+    }
+  }
+  console.log('[Config] Using default localhost for database host');
+  return 'localhost';
+}
+
+// 获取数据库端口
+function getDatabasePort(): number {
+  // 优先使用自定义配置
+  if (process.env.DATABASE_PORT) {
+    return parseInt(process.env.DATABASE_PORT, 10);
+  }
+  // 其次使用微信云托管自动注入的 MYSQL_ADDRESS
+  const mysqlAddress = process.env.MYSQL_ADDRESS;
+  if (mysqlAddress) {
+    const { port } = parseMysqlAddress(mysqlAddress);
+    if (port) {
+      console.log('[Config] Using MYSQL_ADDRESS port:', port);
+      return parseInt(port, 10);
+    }
+  }
+  return 3306;
+}
+
+// 打印环境变量调试信息（仅打印存在性，不打印敏感信息）
+console.log('[Config] Environment check:');
+console.log('[Config] MYSQL_ADDRESS exists:', !!process.env.MYSQL_ADDRESS);
+console.log('[Config] MYSQL_USERNAME exists:', !!process.env.MYSQL_USERNAME);
+console.log('[Config] MYSQL_PASSWORD exists:', !!process.env.MYSQL_PASSWORD);
+console.log('[Config] DATABASE_HOST exists:', !!process.env.DATABASE_HOST);
+console.log('[Config] WX_APPID exists:', !!process.env.WX_APPID);
+
 export default () => ({
   port: parseInt(process.env.PORT || '3000', 10),
   database: {
     type: process.env.DATABASE_TYPE || 'mysql',
     // 优先使用自定义配置，其次使用微信云托管自动注入的 MySQL 环境变量
-    // 微信云托管使用 MYSQL_ADDRESS (格式: host:port)，需要解析
-    host: process.env.DATABASE_HOST || parseMysqlAddress(process.env.MYSQL_ADDRESS).host || 'localhost',
-    port: parseInt(process.env.DATABASE_PORT || parseMysqlAddress(process.env.MYSQL_ADDRESS).port || '3306', 10),
+    host: getDatabaseHost(),
+    port: getDatabasePort(),
     username: process.env.DATABASE_USER || process.env.MYSQL_USERNAME || 'root',
     password: process.env.DATABASE_PASSWORD || process.env.MYSQL_PASSWORD || '',
     database: process.env.DATABASE_NAME || 'petlianbao',
