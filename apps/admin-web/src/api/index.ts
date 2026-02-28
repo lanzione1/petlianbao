@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const apiBaseUrl =
   import.meta.env.VITE_API_BASE_URL ||
-  'https://petllb-228231-9-1406143649.sh.run.tcloudbase.com/api/v1';
+  'https://pet04-228231-9-1406143649.sh.run.tcloudbase.com/api/v1';
 
 const api = axios.create({
   baseURL: apiBaseUrl,
