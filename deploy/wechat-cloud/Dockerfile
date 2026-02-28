@@ -27,6 +27,9 @@ COPY --from=builder /app/apps/backend/dist ./dist
 COPY --from=builder /app/apps/backend/package.json ./
 COPY --from=builder /app/node_modules ./node_modules
 
+# 安装 pnpm 并重新安装生产依赖（确保 mysql2 等依赖正确安装）
+RUN npm install -g pnpm@8.15.0 && pnpm install --production --frozen-lockfile
+
 # 创建 uploads 目录
 RUN mkdir -p uploads
 
