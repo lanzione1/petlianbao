@@ -24,7 +24,7 @@ export class Campaign {
   @Column({ type: 'json', nullable: true })
   content: Record<string, any>;
 
-  @Column({ name: 'target_tags', type: 'json', default: [] })
+  @Column({ name: 'target_tags', type: 'json', nullable: true })
   targetTags: string[];
 
   @Column({ name: 'sent_count', default: 0 })

@@ -23,7 +23,7 @@ export class Package {
   @Column({ type: 'text', nullable: true })
   description: string;
 
-  @Column({ type: 'json', default: [] })
+  @Column({ type: 'json', nullable: true })
   features: string[];
 
   @Column({ length: 20, default: 'active' })
