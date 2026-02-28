@@ -63,20 +63,20 @@ export class PetService {
   async getReminders(merchantId: string, type: string, days: number): Promise<any[]> {
     const petRepo = this.petsRepository;
     const customerRepo = this.dataSource.getRepository(Customer);
-    
+
     const now = new Date();
     const futureDate = new Date(now.getTime() + days * 24 * 60 * 60 * 1000);
-    
+
     // 只查询当前商家的宠物
     const pets = await petRepo.find({
-      where: { merchantId }
+      where: { merchantId },
     });
-    
+
     const results: any[] = [];
-    
+
     for (const pet of pets) {
       const customer = await customerRepo.findOne({ where: { id: pet.customerId } });
-      
+
       if ((!type || type === 'all' || type === 'birthday') && pet.birthday) {
         const birthday = new Date(pet.birthday);
         birthday.setFullYear(now.getFullYear());
@@ -86,14 +86,16 @@ export class PetService {
             reminderType: 'birthday',
             reminderDate: birthday.toISOString().split('T')[0],
             daysLeft: Math.ceil((birthday.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)),
-            customer: customer ? {
-              name: customer.petName,
-              phone: customer.phone
-            } : null
+            customer: customer
+              ? {
+                  name: customer.petName,
+                  phone: customer.phone,
+                }
+              : null,
           });
         }
       }
-      
+
       if ((!type || type === 'all' || type === 'vaccine') && pet.nextVaccineDate) {
         const vaccineDate = new Date(pet.nextVaccineDate);
         if (vaccineDate >= now && vaccineDate <= futureDate) {
@@ -102,14 +104,16 @@ export class PetService {
             reminderType: 'vaccine',
             reminderDate: vaccineDate.toISOString().split('T')[0],
             daysLeft: Math.ceil((vaccineDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)),
-            customer: customer ? {
-              name: customer.petName,
-              phone: customer.phone
-            } : null
+            customer: customer
+              ? {
+                  name: customer.petName,
+                  phone: customer.phone,
+                }
+              : null,
           });
         }
       }
-      
+
       if ((!type || type === 'all' || type === 'deworm') && pet.nextDewormDate) {
         const dewormDate = new Date(pet.nextDewormDate);
         if (dewormDate >= now && dewormDate <= futureDate) {
@@ -118,15 +122,17 @@ export class PetService {
             reminderType: 'deworm',
             reminderDate: dewormDate.toISOString().split('T')[0],
             daysLeft: Math.ceil((dewormDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)),
-            customer: customer ? {
-              name: customer.petName,
-              phone: customer.phone
-            } : null
+            customer: customer
+              ? {
+                  name: customer.petName,
+                  phone: customer.phone,
+                }
+              : null,
           });
         }
       }
     }
-    
+
     return results.sort((a, b) => a.daysLeft - b.daysLeft);
   }
 
@@ -139,7 +145,10 @@ export class PetService {
     return template;
   }
 
-  async updateTemplates(merchantId: string, data: Partial<ReminderTemplate>): Promise<ReminderTemplate> {
+  async updateTemplates(
+    merchantId: string,
+    data: Partial<ReminderTemplate>,
+  ): Promise<ReminderTemplate> {
     let template = await this.templateRepo.findOne({ where: { merchantId } });
     if (!template) {
       template = this.templateRepo.create({ merchantId });
@@ -148,7 +157,12 @@ export class PetService {
     return this.templateRepo.save(template);
   }
 
-  async sendReminders(merchantId: string, petIds: string[], type: string, message: string): Promise<{ total: number; sent: number }> {
+  async sendReminders(
+    merchantId: string,
+    petIds: string[],
+    type: string,
+    message: string,
+  ): Promise<{ total: number; sent: number }> {
     return { total: petIds.length, sent: petIds.length };
   }
 }

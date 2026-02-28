@@ -1,9 +1,4 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
 
 export type PaymentMethod = 'wechat' | 'alipay' | 'cash' | 'member';
 export type TransactionStatus = 'completed' | 'refunded';

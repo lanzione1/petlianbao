@@ -60,7 +60,7 @@ export class MarketingService {
 
   async sendCoupon(merchantId: string, customerIds: string[], coupon: any) {
     const customers = await this.customersRepository.find({
-      where: customerIds.map(id => ({ id, merchantId })) as any,
+      where: customerIds.map((id) => ({ id, merchantId })) as any,
     });
 
     const sentCount = customers.length;

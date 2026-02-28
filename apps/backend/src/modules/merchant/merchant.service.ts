@@ -21,9 +21,9 @@ export class MerchantService {
     detailedAddress?: string;
   }) {
     const existing = await this.merchantsRepository.findOne({
-      where: { openid: data.openid }
+      where: { openid: data.openid },
     });
-    
+
     if (existing) {
       // 更新现有商家的信息
       existing.shopName = data.shopName;
@@ -33,7 +33,7 @@ export class MerchantService {
       if (data.detailedAddress) existing.detailedAddress = data.detailedAddress;
       return this.merchantsRepository.save(existing);
     }
-    
+
     const merchant = this.merchantsRepository.create({
       openid: data.openid,
       shopName: data.shopName,
@@ -44,24 +44,24 @@ export class MerchantService {
       planType: 'free',
       status: 'active',
     });
-    
+
     return this.merchantsRepository.save(merchant);
   }
 
   async getWechatOpenid(code: string) {
     const appId = this.configService.get('wechat.appId');
     const appSecret = this.configService.get('wechat.appSecret');
-    
+
     if (!appId || !appSecret) {
       return { openid: 'mock_openid_' + code, isMock: true };
     }
-    
+
     const url = `https://api.weixin.qq.com/sns/jscode2session?appid=${appId}&secret=${appSecret}&js_code=${code}&grant_type=authorization_code`;
-    
+
     try {
       const response = await fetch(url);
-      const data = await response.json() as { openid?: string };
-      
+      const data = (await response.json()) as { openid?: string };
+
       if (data.openid) {
         return { openid: data.openid };
       } else {

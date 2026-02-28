@@ -12,13 +12,13 @@ import { Service } from './service.entity';
 import { H5Customer } from '../h5-customer/h5-customer.entity';
 import { H5Pet } from '../h5-customer/h5-pet.entity';
 
-export type AppointmentStatus = 
-  | 'pending' 
+export type AppointmentStatus =
+  | 'pending'
   | 'confirmed'
   | 'reschedule'
   | 'in_service'
-  | 'completed' 
-  | 'paid' 
+  | 'completed'
+  | 'paid'
   | 'cancelled_by_merchant'
   | 'cancelled_by_customer';
 

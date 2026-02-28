@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsUUID, IsDateString, IsEnum } from 'class-validator';
+import { IsString, IsOptional, IsUUID, IsDateString } from 'class-validator';
 
 export class CreateH5AppointmentDto {
   @IsUUID()

@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Query,
-  UseGuards,
-  Request,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Query, UseGuards, Request } from '@nestjs/common';
 import { WechatService } from './wechat.service';
 import { WechatLoginDto, BindPhoneDto } from './wechat.dto';
 import { H5CustomerGuard } from './guards/h5-customer.guard';
@@ -28,10 +20,7 @@ export class H5AuthController {
   }
 
   @Get('wechat/callback')
-  async wechatCallback(
-    @Query('code') code: string,
-    @Query('state') state: string,
-  ) {
+  async wechatCallback(@Query('code') code: string, @Query('state') state: string) {
     let merchantId: string;
     try {
       const stateData = JSON.parse(Buffer.from(state, 'base64').toString());
@@ -40,13 +29,11 @@ export class H5AuthController {
       merchantId = state;
     }
 
-    const { customer, token } = await this.wechatService.loginOrRegister(
-      merchantId,
-      code,
-    );
+    const { customer, token } = await this.wechatService.loginOrRegister(merchantId, code);
 
     // 检查是否是新客户（根据创建时间判断，5分钟内为新客户）
-    const isNewCustomer = (new Date().getTime() - new Date(customer.createdAt).getTime()) < 5 * 60 * 1000;
+    const isNewCustomer =
+      new Date().getTime() - new Date(customer.createdAt).getTime() < 5 * 60 * 1000;
 
     return {
       success: true,
@@ -67,13 +54,11 @@ export class H5AuthController {
 
   @Post('dev/login')
   async devLogin(@Body() body: { merchantId: string; openid: string }) {
-    const { customer, token } = await this.wechatService.devLogin(
-      body.merchantId,
-      body.openid,
-    );
+    const { customer, token } = await this.wechatService.devLogin(body.merchantId, body.openid);
 
     // 检查是否是新客户
-    const isNewCustomer = (new Date().getTime() - new Date(customer.createdAt).getTime()) < 5 * 60 * 1000;
+    const isNewCustomer =
+      new Date().getTime() - new Date(customer.createdAt).getTime() < 5 * 60 * 1000;
 
     return {
       success: true,
@@ -95,10 +80,7 @@ export class H5AuthController {
   @Post('phone/bind')
   @UseGuards(H5CustomerGuard)
   async bindPhone(@Request() req, @Body() dto: BindPhoneDto) {
-    const customer = await this.wechatService.bindPhone(
-      req.user.customerId,
-      dto.phone,
-    );
+    const customer = await this.wechatService.bindPhone(req.user.customerId, dto.phone);
     return {
       success: true,
       data: {

@@ -33,7 +33,7 @@ import { NotificationModule } from './modules/notification/notification.module';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {
         const redisHost = configService.get('redis.host');
-        
+
         if (!redisHost) {
           console.log('未配置 Redis，使用内存缓存');
           return { ttl: 60 * 60 * 1000 };
@@ -87,13 +87,13 @@ import { NotificationModule } from './modules/notification/notification.module';
       useFactory: (configService: ConfigService) => {
         const nodeEnv = configService.get('nodeEnv');
         const dbType = configService.get('database.type') || 'mysql';
-        
+
         console.log('[TypeORM] Database type:', dbType);
         console.log('[TypeORM] Database host:', configService.get('database.host'));
         console.log('[TypeORM] Database port:', configService.get('database.port'));
         console.log('[TypeORM] Database username:', configService.get('database.username'));
         console.log('[TypeORM] Database name:', configService.get('database.database'));
-        
+
         const baseConfig: any = {
           type: dbType,
           host: configService.get('database.host'),

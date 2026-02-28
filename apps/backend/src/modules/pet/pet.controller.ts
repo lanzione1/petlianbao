@@ -74,17 +74,17 @@ export class PetController {
   constructor(private readonly petService: PetService) {}
 
   @Get('reminders')
-  async getReminders(
-    @Request() req,
-    @Query('type') type: string,
-    @Query('days') days: string,
-  ) {
+  async getReminders(@Request() req, @Query('type') type: string, @Query('days') days: string) {
     const merchantId = req.user.merchantId;
     if (!merchantId) {
       return { code: 401, message: '未获取到商家信息', data: [] };
     }
     try {
-      const result = await this.petService.getReminders(merchantId, type || 'all', parseInt(days) || 7);
+      const result = await this.petService.getReminders(
+        merchantId,
+        type || 'all',
+        parseInt(days) || 7,
+      );
       return { code: 200, message: 'success', data: result };
     } catch (error) {
       console.error('getReminders error:', error);
@@ -105,10 +105,7 @@ export class PetController {
   }
 
   @Post('reminders/send')
-  sendReminders(
-    @Request() req,
-    @Body() body: { petIds: string[]; type: string; message: string },
-  ) {
+  sendReminders(@Request() req, @Body() body: { petIds: string[]; type: string; message: string }) {
     const merchantId = req.user.merchantId || req.user.id;
     return this.petService.sendReminders(merchantId, body.petIds, body.type, body.message);
   }
@@ -140,33 +137,32 @@ export class PetController {
   }
 
   @Post(':id/photo')
-  @UseInterceptors(FileInterceptor('file', {
-    storage: diskStorage({
-      destination: (req, file, cb) => {
-        const uploadDir = join(process.cwd(), 'uploads', 'pets');
-        if (!existsSync(uploadDir)) {
-          mkdirSync(uploadDir, { recursive: true });
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: (req, file, cb) => {
+          const uploadDir = join(process.cwd(), 'uploads', 'pets');
+          if (!existsSync(uploadDir)) {
+            mkdirSync(uploadDir, { recursive: true });
+          }
+          cb(null, uploadDir);
+        },
+        filename: (req, file, cb) => {
+          const uniqueName = `${uuidv4()}${extname(file.originalname)}`;
+          cb(null, uniqueName);
+        },
+      }),
+      limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+      fileFilter: (req, file, cb) => {
+        if (!file.mimetype.match(/^image\/(jpeg|png|gif|webp)$/)) {
+          cb(new Error('Only image files are allowed'), false);
+          return;
         }
-        cb(null, uploadDir);
-      },
-      filename: (req, file, cb) => {
-        const uniqueName = `${uuidv4()}${extname(file.originalname)}`;
-        cb(null, uniqueName);
+        cb(null, true);
       },
     }),
-    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
-    fileFilter: (req, file, cb) => {
-      if (!file.mimetype.match(/^image\/(jpeg|png|gif|webp)$/)) {
-        cb(new Error('Only image files are allowed'), false);
-        return;
-      }
-      cb(null, true);
-    },
-  }))
-  async uploadPhoto(
-    @Param('id') id: string,
-    @UploadedFile() file: Express.Multer.File,
-  ) {
+  )
+  async uploadPhoto(@Param('id') id: string, @UploadedFile() file: Express.Multer.File) {
     const photoUrl = `/uploads/pets/${file.filename}`;
     await this.petService.update(id, { photo: photoUrl } as any);
     return { url: photoUrl };

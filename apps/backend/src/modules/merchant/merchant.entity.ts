@@ -33,10 +33,10 @@ export class Merchant {
   @Column({ name: 'status', length: 20, default: 'active' })
   status: string;
 
-  @Column({ 
-    name: 'business_hours', 
-    type: 'json', 
-    nullable: true
+  @Column({
+    name: 'business_hours',
+    type: 'json',
+    nullable: true,
   })
   businessHours: Record<string, any>;
 

@@ -1,13 +1,18 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DataSource } from 'typeorm';
-import { Appointment, AppointmentStatus } from './appointment.entity';
+import { Appointment } from './appointment.entity';
 import { AppointmentHistory, HistoryAction, OperatorType } from './appointment-history.entity';
 import { H5Customer } from '../h5-customer/h5-customer.entity';
 import { H5Pet } from '../h5-customer/h5-pet.entity';
 import { Customer } from '../customer/customer.entity';
 import { Service } from './service.entity';
-import { CreateH5AppointmentDto, RescheduleDto, CancelDto, ConfirmRescheduleDto } from './h5-appointment.dto';
+import {
+  CreateH5AppointmentDto,
+  RescheduleDto,
+  CancelDto,
+  ConfirmRescheduleDto,
+} from './h5-appointment.dto';
 import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
@@ -97,7 +102,7 @@ export class H5AppointmentService {
       customer.nickname || 'Customer',
       null,
       appointment.appointmentTime,
-      dto.notes
+      dto.notes,
     );
 
     await this.notificationService.sendAppointmentNotification(
@@ -108,7 +113,7 @@ export class H5AppointmentService {
         pet,
         service,
       },
-      'merchant'
+      'merchant',
     );
 
     return this.findOne(appointment.id, customerId);
@@ -141,7 +146,7 @@ export class H5AppointmentService {
         'appointment.history',
         AppointmentHistory,
         'history',
-        'history.appointmentId = appointment.id'
+        'history.appointmentId = appointment.id',
       )
       .where('appointment.id = :appointmentId', { appointmentId })
       .andWhere('appointment.h5CustomerId = :customerId', { customerId })
@@ -178,7 +183,7 @@ export class H5AppointmentService {
       customer?.nickname || 'Customer',
       oldTime,
       appointment.proposedTime,
-      dto.notes
+      dto.notes,
     );
 
     return this.findOne(appointmentId, customerId);
@@ -213,7 +218,7 @@ export class H5AppointmentService {
       customer?.nickname || 'Customer',
       oldTime,
       appointment.appointmentTime,
-      dto.notes
+      dto.notes,
     );
 
     return this.findOne(appointmentId, customerId);
@@ -245,7 +250,7 @@ export class H5AppointmentService {
       customer?.nickname || 'Customer',
       null,
       null,
-      'Rejected reschedule proposal'
+      'Rejected reschedule proposal',
     );
 
     return this.findOne(appointmentId, customerId);
@@ -274,7 +279,7 @@ export class H5AppointmentService {
       customer?.nickname || 'Customer',
       null,
       null,
-      'Confirmed appointment'
+      'Confirmed appointment',
     );
 
     return this.findOne(appointmentId, customerId);
@@ -301,14 +306,10 @@ export class H5AppointmentService {
       customer?.nickname || 'Customer',
       null,
       null,
-      dto.reason
+      dto.reason,
     );
 
-    await this.notificationService.sendAppointmentNotification(
-      'cancel',
-      appointment,
-      'merchant'
-    );
+    await this.notificationService.sendAppointmentNotification('cancel', appointment, 'merchant');
 
     return { success: true, message: 'Appointment cancelled' };
   }
@@ -321,7 +322,7 @@ export class H5AppointmentService {
     operatorName: string,
     oldTime: Date | null,
     newTime: Date | null,
-    notes: string | undefined
+    notes: string | undefined,
   ) {
     const history = this.historyRepo.create({
       appointmentId,

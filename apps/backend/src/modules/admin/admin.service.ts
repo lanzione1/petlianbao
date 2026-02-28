@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, In, Between } from 'typeorm';
+import { Repository, Between } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { Admin } from './admin.entity';
@@ -58,10 +58,10 @@ export class AdminService {
       lastLoginAt: new Date(),
     });
 
-    const payload = { 
-      adminId: admin.id, 
-      username: admin.username, 
-      role: admin.role 
+    const payload = {
+      adminId: admin.id,
+      username: admin.username,
+      role: admin.role,
     };
 
     return {
@@ -75,17 +75,12 @@ export class AdminService {
     };
   }
 
-  async createAdmin(data: {
-    username: string;
-    password: string;
-    name: string;
-    role?: string;
-  }) {
+  async createAdmin(data: { username: string; password: string; name: string; role?: string }) {
     const hashedPassword = await bcrypt.hash(data.password, 10);
     const admin = this.adminsRepository.create({
       ...data,
       password: hashedPassword,
-      role: data.role as any || 'admin',
+      role: (data.role as any) || 'admin',
     });
     return this.adminsRepository.save(admin);
   }
@@ -94,7 +89,7 @@ export class AdminService {
     const existing = await this.adminsRepository.findOne({
       where: { username: 'admin' },
     });
-    
+
     if (!existing) {
       await this.createAdmin({
         username: 'admin',
@@ -109,10 +104,38 @@ export class AdminService {
     const existingPackages = await this.packageRepository.count();
     if (existingPackages === 0) {
       const defaultPackages = [
-        { name: '免费版', type: 'free', price: 0, description: '适合个人店主试用', features: ['基础客户管理', '最多50个客户', '基础预约功能'], status: 'active' },
-        { name: '基础版', type: 'basic', price: 9900, description: '适合小型宠物店', features: ['无限客户管理', '套餐管理', '预约管理', '基础统计'], status: 'active' },
-        { name: '专业版', type: 'pro', price: 29900, description: '适合成长型宠物店', features: ['基础版全部功能', '会员营销', '短信通知', '高级统计', '自定义服务'], status: 'active' },
-        { name: '企业版', type: 'enterprise', price: 99900, description: '适合连锁宠物店', features: ['专业版全部功能', '多门店管理', '员工管理', 'API接口', '专属客服'], status: 'active' },
+        {
+          name: '免费版',
+          type: 'free',
+          price: 0,
+          description: '适合个人店主试用',
+          features: ['基础客户管理', '最多50个客户', '基础预约功能'],
+          status: 'active',
+        },
+        {
+          name: '基础版',
+          type: 'basic',
+          price: 9900,
+          description: '适合小型宠物店',
+          features: ['无限客户管理', '套餐管理', '预约管理', '基础统计'],
+          status: 'active',
+        },
+        {
+          name: '专业版',
+          type: 'pro',
+          price: 29900,
+          description: '适合成长型宠物店',
+          features: ['基础版全部功能', '会员营销', '短信通知', '高级统计', '自定义服务'],
+          status: 'active',
+        },
+        {
+          name: '企业版',
+          type: 'enterprise',
+          price: 99900,
+          description: '适合连锁宠物店',
+          features: ['专业版全部功能', '多门店管理', '员工管理', 'API接口', '专属客服'],
+          status: 'active',
+        },
       ];
       for (const pkg of defaultPackages) {
         await this.packageRepository.save(this.packageRepository.create(pkg));
@@ -123,14 +146,9 @@ export class AdminService {
 
   // ========== 商家管理 ==========
 
-  async getMerchants(query: {
-    page?: number;
-    limit?: number;
-    status?: string;
-    search?: string;
-  }) {
+  async getMerchants(query: { page?: number; limit?: number; status?: string; search?: string }) {
     const { page = 1, limit = 20, status, search } = query;
-    
+
     const queryBuilder = this.merchantsRepository
       .createQueryBuilder('merchant')
       .orderBy('merchant.createdAt', 'DESC');
@@ -142,10 +160,9 @@ export class AdminService {
     }
 
     if (search) {
-      queryBuilder.andWhere(
-        '(merchant.shopName LIKE :search OR merchant.phone LIKE :search)',
-        { search: `%${search}%` }
-      );
+      queryBuilder.andWhere('(merchant.shopName LIKE :search OR merchant.phone LIKE :search)', {
+        search: `%${search}%`,
+      });
     }
 
     const total = await queryBuilder.getCount();
@@ -159,7 +176,7 @@ export class AdminService {
       list.map(async (m) => {
         const stats = await this.getMerchantQuickStats(m.id);
         return { ...m, stats };
-      })
+      }),
     );
 
     return {
@@ -225,7 +242,7 @@ export class AdminService {
       oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
       updateData.planExpiredAt = oneYearLater;
     }
-    
+
     await this.merchantsRepository.update(merchantId, updateData);
     return { success: true };
   }
@@ -258,10 +275,10 @@ export class AdminService {
   async getPlatformStats() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    
+
     const sevenDaysAgo = new Date(today);
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-    
+
     const thirtyDaysAgo = new Date(today);
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
@@ -415,8 +432,8 @@ export class AdminService {
 
   async getMerchantRanking(type: string = 'revenue', limit: number = 20) {
     const merchants = await this.merchantsRepository.find();
-    
-    const filtered = merchants.filter(m => m.planType !== 'banned');
+
+    const filtered = merchants.filter((m) => m.planType !== 'banned');
 
     const allTransactions = await this.transactionsRepository.find();
     const allCustomers = await this.customersRepository.find();
@@ -428,7 +445,8 @@ export class AdminService {
 
     for (const t of allTransactions) {
       const current = revenueByMerchant.get(t.merchantId) || 0;
-      const amount = typeof t.totalAmount === 'string' ? parseFloat(t.totalAmount) : (t.totalAmount || 0);
+      const amount =
+        typeof t.totalAmount === 'string' ? parseFloat(t.totalAmount) : t.totalAmount || 0;
       revenueByMerchant.set(t.merchantId, current + amount);
     }
 
@@ -442,7 +460,7 @@ export class AdminService {
       appointmentCountByMerchant.set(a.merchantId, current + 1);
     }
 
-    const results = filtered.map(m => ({
+    const results = filtered.map((m) => ({
       id: m.id,
       shopName: m.shopName,
       phone: m.phone,
@@ -488,7 +506,7 @@ export class AdminService {
   private async getMerchantFullStats(merchantId: string) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    
+
     const thirtyDaysAgo = new Date(today);
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
@@ -541,9 +559,8 @@ export class AdminService {
     });
 
     // 客单价
-    const avgPrice = totalTransactions > 0 
-      ? parseFloat((totalRevenue as any)?.sum || '0') / totalTransactions 
-      : 0;
+    const avgPrice =
+      totalTransactions > 0 ? parseFloat((totalRevenue as any)?.sum || '0') / totalTransactions : 0;
 
     // 活跃客户（30天内有交易）
     const activeCustomers = await this.transactionsRepository
@@ -609,9 +626,9 @@ export class AdminService {
         .createQueryBuilder('transaction')
         .select('SUM(transaction.totalAmount)', 'sum')
         .where('transaction.merchantId = :id', { id: merchantId })
-        .andWhere('transaction.createdAt BETWEEN :start AND :end', { 
-          start: date, 
-          end: nextDate 
+        .andWhere('transaction.createdAt BETWEEN :start AND :end', {
+          start: date,
+          end: nextDate,
         })
         .getRawOne();
 
@@ -669,7 +686,7 @@ export class AdminService {
       .getMany();
 
     return {
-      list: list.map(l => ({
+      list: list.map((l) => ({
         ...l,
         adminName: l.admin?.name || l.admin?.username,
       })),
@@ -718,7 +735,7 @@ export class AdminService {
       .getRawOne();
 
     return {
-      list: list.map(m => ({
+      list: list.map((m) => ({
         ...m,
         shopName: m.merchant?.shopName,
       })),
@@ -807,7 +824,7 @@ export class AdminService {
       .getRawOne();
 
     return {
-      list: list.map(w => ({
+      list: list.map((w) => ({
         ...w,
         shopName: w.merchant?.shopName,
       })),
@@ -899,14 +916,17 @@ export class AdminService {
     return this.packageRepository.save(pkg);
   }
 
-  async updatePackage(id: string, data: Partial<{
-    name: string;
-    type: string;
-    price: number;
-    description: string;
-    features: string[];
-    status: string;
-  }>) {
+  async updatePackage(
+    id: string,
+    data: Partial<{
+      name: string;
+      type: string;
+      price: number;
+      description: string;
+      features: string[];
+      status: string;
+    }>,
+  ) {
     await this.packageRepository.update(id, data);
     return this.getPackage(id);
   }

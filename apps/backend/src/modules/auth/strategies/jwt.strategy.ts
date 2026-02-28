@@ -33,7 +33,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         role: staff.role,
       };
     }
-    
+
     const merchant = await this.authService.validateUser(payload.merchantId);
     if (!merchant) {
       return null;

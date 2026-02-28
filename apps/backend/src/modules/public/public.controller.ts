@@ -92,7 +92,7 @@ export class PublicController {
     let customer = await this.customersRepository.findOne({
       where: { phone: data.phone, merchantId: data.merchantId },
     });
-    
+
     if (!customer) {
       customer = this.customersRepository.create({
         merchantId: data.merchantId,

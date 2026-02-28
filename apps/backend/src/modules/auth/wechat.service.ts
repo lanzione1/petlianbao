@@ -39,7 +39,9 @@ export class WechatService {
     return `https://open.weixin.qq.com/connect/oauth2/authorize?${params.toString()}#wechat_redirect`;
   }
 
-  async getAccessToken(code: string): Promise<{ accessToken: string; openid: string; refreshToken: string }> {
+  async getAccessToken(
+    code: string,
+  ): Promise<{ accessToken: string; openid: string; refreshToken: string }> {
     const params = new URLSearchParams({
       appid: this.appId,
       secret: this.appSecret,
@@ -48,7 +50,7 @@ export class WechatService {
     });
 
     const { data } = await axios.get(
-      `https://api.weixin.qq.com/sns/oauth2/access_token?${params.toString()}`
+      `https://api.weixin.qq.com/sns/oauth2/access_token?${params.toString()}`,
     );
 
     if (data.errcode) {
@@ -65,7 +67,7 @@ export class WechatService {
 
   async getUserInfo(accessToken: string, openid: string) {
     const { data } = await axios.get(
-      `https://api.weixin.qq.com/sns/userinfo?access_token=${accessToken}&openid=${openid}`
+      `https://api.weixin.qq.com/sns/userinfo?access_token=${accessToken}&openid=${openid}`,
     );
 
     if (data.errcode) {
@@ -97,14 +99,14 @@ export class WechatService {
       });
       await this.customerRepo.save(customer);
       this.logger.log(`Created new H5 customer: ${customer.id}`);
-      
+
       // 自动创建正式客户记录（方案A）
       await this.createFormalCustomer(customer, merchantId);
     } else {
       customer.nickname = userInfo.nickname;
       customer.avatar = userInfo.avatar;
       await this.customerRepo.save(customer);
-      
+
       // 更新正式客户记录的昵称
       await this.updateFormalCustomer(customer, merchantId);
     }
@@ -119,7 +121,10 @@ export class WechatService {
   }
 
   // 自动创建正式客户记录
-  private async createFormalCustomer(h5Customer: H5Customer, merchantId: string): Promise<Customer> {
+  private async createFormalCustomer(
+    h5Customer: H5Customer,
+    merchantId: string,
+  ): Promise<Customer> {
     // 检查是否已存在（通过openid关联）
     let formalCustomer = await this.formalCustomerRepo.findOne({
       where: { merchantId, openid: h5Customer.openid },

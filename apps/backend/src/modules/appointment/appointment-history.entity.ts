@@ -8,13 +8,13 @@ import {
 } from 'typeorm';
 import { Appointment } from './appointment.entity';
 
-export type HistoryAction = 
-  | 'create' 
-  | 'confirm' 
-  | 'reschedule' 
-  | 'accept' 
-  | 'reject' 
-  | 'cancel' 
+export type HistoryAction =
+  | 'create'
+  | 'confirm'
+  | 'reschedule'
+  | 'accept'
+  | 'reject'
+  | 'cancel'
   | 'complete';
 
 export type OperatorType = 'customer' | 'merchant';

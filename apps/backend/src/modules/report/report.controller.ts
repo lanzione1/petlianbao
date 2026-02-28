@@ -1,10 +1,4 @@
-import {
-  Controller,
-  Get,
-  Query,
-  UseGuards,
-  Request,
-} from '@nestjs/common';
+import { Controller, Get, Query, UseGuards, Request } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ReportService } from './report.service';
 
@@ -19,11 +13,7 @@ export class ReportController {
   }
 
   @Get('monthly')
-  getMonthlyReport(
-    @Request() req,
-    @Query('year') year?: string,
-    @Query('month') month?: string,
-  ) {
+  getMonthlyReport(@Request() req, @Query('year') year?: string, @Query('month') month?: string) {
     const now = new Date();
     return this.reportService.getMonthlyReport(
       req.user.merchantId,

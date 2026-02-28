@@ -64,11 +64,7 @@ export class StaffController {
   }
 
   @Put(':id/status')
-  updateStatus(
-    @Request() req,
-    @Param('id') id: string,
-    @Body() updateStatusDto: UpdateStatusDto,
-  ) {
+  updateStatus(@Request() req, @Param('id') id: string, @Body() updateStatusDto: UpdateStatusDto) {
     if (req.user.role !== 'admin') {
       throw new ForbiddenException('只有管理员可以修改店员状态');
     }

@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AdminService } from './admin.service';
-import { IsString, IsOptional, IsNumber, Min } from 'class-validator';
+import { IsString, IsOptional } from 'class-validator';
 
 class AdminLoginDto {
   @IsString()
@@ -89,10 +89,7 @@ export class AdminController {
 
   @UseGuards(AuthGuard('jwt'))
   @Put('merchants/:id/ban')
-  async banMerchant(
-    @Param('id') id: string,
-    @Body('reason') reason: string,
-  ) {
+  async banMerchant(@Param('id') id: string, @Body('reason') reason: string) {
     return this.adminService.banMerchant(id, reason);
   }
 
@@ -141,10 +138,7 @@ export class AdminController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get('ranking')
-  async getMerchantRanking(
-    @Query('type') type?: string,
-    @Query('limit') limit?: string,
-  ) {
+  async getMerchantRanking(@Query('type') type?: string, @Query('limit') limit?: string) {
     return this.adminService.getMerchantRanking(type || 'revenue', Number(limit) || 20);
   }
 
@@ -227,7 +221,13 @@ export class AdminController {
     @Body('remark') remark: string,
     @Request() req,
   ) {
-    return this.adminService.processWithdrawal(id, status as any, transactionNo, remark, req.user.adminId);
+    return this.adminService.processWithdrawal(
+      id,
+      status as any,
+      transactionNo,
+      remark,
+      req.user.adminId,
+    );
   }
 
   // Package Management
@@ -245,13 +245,16 @@ export class AdminController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post('packages')
-  async createPackage(@Body() dto: {
-    name: string;
-    type: string;
-    price: number;
-    description?: string;
-    features?: string[];
-  }) {
+  async createPackage(
+    @Body()
+    dto: {
+      name: string;
+      type: string;
+      price: number;
+      description?: string;
+      features?: string[];
+    },
+  ) {
     return this.adminService.createPackage(dto);
   }
 
@@ -259,7 +262,8 @@ export class AdminController {
   @Put('packages/:id')
   async updatePackage(
     @Param('id') id: string,
-    @Body() dto: {
+    @Body()
+    dto: {
       name?: string;
       type?: string;
       price?: number;
@@ -279,10 +283,7 @@ export class AdminController {
 
   @UseGuards(AuthGuard('jwt'))
   @Put('packages/:id/status')
-  async updatePackageStatus(
-    @Param('id') id: string,
-    @Body('status') status: string,
-  ) {
+  async updatePackageStatus(@Param('id') id: string, @Body('status') status: string) {
     return this.adminService.updatePackageStatus(id, status);
   }
 }

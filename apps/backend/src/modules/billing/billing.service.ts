@@ -16,13 +16,16 @@ export class BillingService {
     private appointmentsRepository: Repository<Appointment>,
   ) {}
 
-  async checkout(merchantId: string, data: {
-    customerId: string;
-    appointmentId?: string;
-    items: TransactionItem[];
-    totalAmount: number;
-    paymentMethod: 'wechat' | 'alipay' | 'cash' | 'member';
-  }): Promise<Transaction> {
+  async checkout(
+    merchantId: string,
+    data: {
+      customerId: string;
+      appointmentId?: string;
+      items: TransactionItem[];
+      totalAmount: number;
+      paymentMethod: 'wechat' | 'alipay' | 'cash' | 'member';
+    },
+  ): Promise<Transaction> {
     const customer = await this.customersRepository.findOne({
       where: { id: data.customerId, merchantId },
     });
@@ -92,11 +95,12 @@ export class BillingService {
     const avgPrice = orderCount > 0 ? totalRevenue / orderCount : 0;
 
     const paymentBreakdown: Record<string, number> = {};
-    transactions.forEach(t => {
-      paymentBreakdown[t.paymentMethod] = (paymentBreakdown[t.paymentMethod] || 0) + Number(t.totalAmount);
+    transactions.forEach((t) => {
+      paymentBreakdown[t.paymentMethod] =
+        (paymentBreakdown[t.paymentMethod] || 0) + Number(t.totalAmount);
     });
 
-    const customerIds = [...new Set(transactions.map(t => t.customerId))];
+    const customerIds = [...new Set(transactions.map((t) => t.customerId))];
 
     return {
       totalRevenue,
@@ -109,7 +113,7 @@ export class BillingService {
 
   async closeDay(merchantId: string, cashAmount: number): Promise<any> {
     const summary = await this.getDailySummary(merchantId);
-    
+
     return {
       ...summary,
       cashExpected: summary.paymentBreakdown['cash'] || 0,

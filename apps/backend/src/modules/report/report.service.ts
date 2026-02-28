@@ -29,10 +29,10 @@ export class ReportService {
 
     const totalRevenue = transactions.reduce((sum, t) => sum + Number(t.totalAmount), 0);
     const orderCount = transactions.length;
-    const uniqueCustomers = new Set(transactions.map(t => t.customerId)).size;
+    const uniqueCustomers = new Set(transactions.map((t) => t.customerId)).size;
 
     const paymentBreakdown: Record<string, { count: number; amount: number }> = {};
-    transactions.forEach(t => {
+    transactions.forEach((t) => {
       if (!paymentBreakdown[t.paymentMethod]) {
         paymentBreakdown[t.paymentMethod] = { count: 0, amount: 0 };
       }
@@ -41,8 +41,8 @@ export class ReportService {
     });
 
     const serviceStats: Record<string, { count: number; revenue: number }> = {};
-    transactions.forEach(t => {
-      t.items.forEach(item => {
+    transactions.forEach((t) => {
+      t.items.forEach((item) => {
         if (!serviceStats[item.name]) {
           serviceStats[item.name] = { count: 0, revenue: 0 };
         }
@@ -80,7 +80,7 @@ export class ReportService {
     const orderCount = transactions.length;
 
     const dailyStats: Record<string, { revenue: number; count: number }> = {};
-    transactions.forEach(t => {
+    transactions.forEach((t) => {
       const day = t.createdAt.toISOString().split('T')[0];
       if (!dailyStats[day]) {
         dailyStats[day] = { revenue: 0, count: 0 };
@@ -109,9 +109,10 @@ export class ReportService {
     });
 
     const totalCustomers = customers.length;
-    const activeCustomers = customers.filter(c => {
+    const activeCustomers = customers.filter((c) => {
       if (!c.lastVisitAt) return false;
-      const daysSinceLastVisit = (Date.now() - new Date(c.lastVisitAt).getTime()) / (1000 * 60 * 60 * 24);
+      const daysSinceLastVisit =
+        (Date.now() - new Date(c.lastVisitAt).getTime()) / (1000 * 60 * 60 * 24);
       return daysSinceLastVisit <= 30;
     }).length;
 
@@ -123,7 +124,7 @@ export class ReportService {
       inactiveCustomers: totalCustomers - activeCustomers,
       totalSpent,
       avgSpent: totalCustomers > 0 ? totalSpent / totalCustomers : 0,
-      topCustomers: customers.slice(0, 10).map(c => ({
+      topCustomers: customers.slice(0, 10).map((c) => ({
         id: c.id,
         petName: c.petName,
         totalSpent: c.totalSpent,
@@ -139,8 +140,8 @@ export class ReportService {
     });
 
     const serviceStats: Record<string, { count: number; revenue: number }> = {};
-    transactions.forEach(t => {
-      t.items.forEach(item => {
+    transactions.forEach((t) => {
+      t.items.forEach((item) => {
         if (!serviceStats[item.name]) {
           serviceStats[item.name] = { count: 0, revenue: 0 };
         }

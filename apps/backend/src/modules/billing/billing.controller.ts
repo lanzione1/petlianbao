@@ -1,14 +1,15 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  UseGuards,
-  Request,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, Request } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { BillingService } from './billing.service';
-import { IsUUID, IsNumber, IsString, IsArray, ValidateNested, IsOptional, IsEnum } from 'class-validator';
+import {
+  IsUUID,
+  IsNumber,
+  IsString,
+  IsArray,
+  ValidateNested,
+  IsOptional,
+  IsEnum,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 class CheckoutItemDto {

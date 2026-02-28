@@ -34,24 +34,24 @@ export class AuthService {
     } else {
       const appId = this.configService.get('wechat.appId');
       const appSecret = this.configService.get('wechat.appSecret');
-      
+
       const url = `https://api.weixin.qq.com/sns/jscode2session?appid=${appId}&secret=${appSecret}&js_code=${code}&grant_type=authorization_code`;
       openid = `real_openid_${code}`;
     }
 
     const staff = await this.staffsRepository.findOne({ where: { openid } });
-    
+
     if (staff) {
       if (staff.status === 'disabled') {
         throw new UnauthorizedException('账号已被禁用');
       }
-      
-      const payload = { 
-        merchantId: staff.merchantId, 
+
+      const payload = {
+        merchantId: staff.merchantId,
         openid: staff.openid,
         staffId: staff.id,
       };
-      
+
       return {
         access_token: this.jwtService.sign(payload),
         staff: {
@@ -69,7 +69,7 @@ export class AuthService {
 
     if (!merchant) {
       const merchantId = nodeEnv === 'development' ? this.DEV_MERCHANT_ID : undefined;
-      
+
       merchant = this.merchantsRepository.create({
         id: merchantId,
         openid,

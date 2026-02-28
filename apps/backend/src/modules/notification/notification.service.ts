@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { NotificationLog, NotificationStatus } from './notification.entity';
+import { NotificationLog } from './notification.entity';
 import axios from 'axios';
 
 @Injectable()
@@ -31,7 +31,7 @@ export class NotificationService {
     }
 
     const { data } = await axios.get(
-      `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${this.appId}&secret=${this.appSecret}`
+      `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${this.appId}&secret=${this.appSecret}`,
     );
 
     if (data.errcode) {
@@ -60,7 +60,7 @@ export class NotificationService {
           template_id: templateId,
           data,
           page,
-        }
+        },
       );
 
       if (response.data.errcode !== 0) {

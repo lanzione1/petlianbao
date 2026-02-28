@@ -19,7 +19,18 @@ import { AdminJwtStrategy } from './admin-jwt.strategy';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Admin, AdminLog, Merchant, Customer, Appointment, Transaction, Service, Media, Withdrawal, Package]),
+    TypeOrmModule.forFeature([
+      Admin,
+      AdminLog,
+      Merchant,
+      Customer,
+      Appointment,
+      Transaction,
+      Service,
+      Media,
+      Withdrawal,
+      Package,
+    ]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       imports: [ConfigModule],

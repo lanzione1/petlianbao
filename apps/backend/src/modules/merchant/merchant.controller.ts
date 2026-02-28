@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Body, Param, Query, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Put, Body, Query, UseGuards, Request } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { MerchantService } from './merchant.service';
 
@@ -7,14 +7,17 @@ export class MerchantController {
   constructor(private readonly merchantService: MerchantService) {}
 
   @Post('register')
-  register(@Body() dto: {
-    openid: string;
-    shopName: string;
-    ownerName: string;
-    phone: string;
-    address?: string;
-    detailedAddress?: string;
-  }) {
+  register(
+    @Body()
+    dto: {
+      openid: string;
+      shopName: string;
+      ownerName: string;
+      phone: string;
+      address?: string;
+      detailedAddress?: string;
+    },
+  ) {
     return this.merchantService.register(dto);
   }
 

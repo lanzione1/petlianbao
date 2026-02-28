@@ -16,17 +16,17 @@ export class AdminJwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   async validate(payload: any) {
     // 管理员和商家共用同一个JWT，通过payload区分
     if (payload.adminId) {
-      return { 
-        id: payload.adminId, 
-        username: payload.username, 
+      return {
+        id: payload.adminId,
+        username: payload.username,
         role: payload.role,
-        isAdmin: true 
+        isAdmin: true,
       };
     }
-    return { 
-      id: payload.merchantId, 
-      openid: payload.openid, 
-      isAdmin: false 
+    return {
+      id: payload.merchantId,
+      openid: payload.openid,
+      isAdmin: false,
     };
   }
 }

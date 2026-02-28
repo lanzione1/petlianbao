@@ -20,17 +20,20 @@ export class AppointmentsService {
     private petsRepository: Repository<Pet>,
   ) {}
 
-  async create(merchantId: string, data: {
-    customerId: string;
-    serviceId: string;
-    appointmentTime: string;
-    notes?: string;
-    petIds?: string[];
-  }): Promise<Appointment> {
+  async create(
+    merchantId: string,
+    data: {
+      customerId: string;
+      serviceId: string;
+      appointmentTime: string;
+      notes?: string;
+      petIds?: string[];
+    },
+  ): Promise<Appointment> {
     const service = await this.servicesRepository.findOne({
       where: { id: data.serviceId, merchantId },
     });
-    
+
     if (!service) {
       throw new NotFoundException('服务项目不存在');
     }
@@ -39,7 +42,7 @@ export class AppointmentsService {
     let notesWithPets = data.notes || '';
     if (data.petIds && data.petIds.length > 0) {
       const pets = await this.petsRepository.findByIds(data.petIds);
-      const petNames = pets.map(p => p.name).join('、');
+      const petNames = pets.map((p) => p.name).join('、');
       if (notesWithPets) {
         notesWithPets += ` | 宠物: ${petNames}`;
       } else {
@@ -68,44 +71,48 @@ export class AppointmentsService {
       query = query.andWhere('DATE(appointment.appointmentTime) = :date', { date });
     }
 
-    const appointments = await query
-      .orderBy('appointment.appointmentTime', 'ASC')
-      .getMany();
+    const appointments = await query.orderBy('appointment.appointmentTime', 'ASC').getMany();
 
     // 手动获取关联数据
-    const result = await Promise.all(appointments.map(async (apt) => {
-      const customer = await this.customersRepository.findOne({ 
-        where: { id: apt.customerId } 
-      });
-      const service = await this.servicesRepository.findOne({ 
-        where: { id: apt.serviceId } 
-      });
-      
-      // 获取该客户的宠物列表
-      const pets = await this.petsRepository.find({ 
-        where: { customerId: apt.customerId } 
-      });
-      
-      return {
-        ...apt,
-        customer: customer ? { 
-          id: customer.id, 
-          petName: customer.petName,
-          phone: customer.phone
-        } : null,
-        pets: pets.map(p => ({
-          id: p.id,
-          name: p.name,
-          species: p.species,
-          breed: p.breed
-        })),
-        service: service ? { 
-          id: service.id, 
-          name: service.name, 
-          price: service.price 
-        } : null,
-      };
-    }));
+    const result = await Promise.all(
+      appointments.map(async (apt) => {
+        const customer = await this.customersRepository.findOne({
+          where: { id: apt.customerId },
+        });
+        const service = await this.servicesRepository.findOne({
+          where: { id: apt.serviceId },
+        });
+
+        // 获取该客户的宠物列表
+        const pets = await this.petsRepository.find({
+          where: { customerId: apt.customerId },
+        });
+
+        return {
+          ...apt,
+          customer: customer
+            ? {
+                id: customer.id,
+                petName: customer.petName,
+                phone: customer.phone,
+              }
+            : null,
+          pets: pets.map((p) => ({
+            id: p.id,
+            name: p.name,
+            species: p.species,
+            breed: p.breed,
+          })),
+          service: service
+            ? {
+                id: service.id,
+                name: service.name,
+                price: service.price,
+              }
+            : null,
+        };
+      }),
+    );
 
     return result;
   }
@@ -120,27 +127,33 @@ export class AppointmentsService {
 
     const appointments = await query.getMany();
 
-    const result = await Promise.all(appointments.map(async (apt) => {
-      const customer = await this.customersRepository.findOne({ 
-        where: { id: apt.customerId } 
-      });
-      const service = await this.servicesRepository.findOne({ 
-        where: { id: apt.serviceId } 
-      });
-      
-      return {
-        ...apt,
-        customer: customer ? { 
-          id: customer.id, 
-          petName: customer.petName 
-        } : null,
-        service: service ? { 
-          id: service.id, 
-          name: service.name, 
-          price: service.price 
-        } : null,
-      };
-    }));
+    const result = await Promise.all(
+      appointments.map(async (apt) => {
+        const customer = await this.customersRepository.findOne({
+          where: { id: apt.customerId },
+        });
+        const service = await this.servicesRepository.findOne({
+          where: { id: apt.serviceId },
+        });
+
+        return {
+          ...apt,
+          customer: customer
+            ? {
+                id: customer.id,
+                petName: customer.petName,
+              }
+            : null,
+          service: service
+            ? {
+                id: service.id,
+                name: service.name,
+                price: service.price,
+              }
+            : null,
+        };
+      }),
+    );
 
     return result;
   }
@@ -149,40 +162,44 @@ export class AppointmentsService {
     const appointment = await this.appointmentsRepository.findOne({
       where: { id, merchantId },
     });
-    
+
     if (!appointment) {
       throw new NotFoundException('预约不存在');
     }
     return appointment;
   }
 
-  async update(merchantId: string, id: string, data: {
-    appointmentTime?: string;
-    status?: AppointmentStatus;
-    notes?: string;
-    completedByStaffId?: string;
-    completedByStaffName?: string;
-    cancelReason?: string;
-  }): Promise<Appointment> {
+  async update(
+    merchantId: string,
+    id: string,
+    data: {
+      appointmentTime?: string;
+      status?: AppointmentStatus;
+      notes?: string;
+      completedByStaffId?: string;
+      completedByStaffName?: string;
+      cancelReason?: string;
+    },
+  ): Promise<Appointment> {
     const appointment = await this.findOne(merchantId, id);
-    
+
     if (data.appointmentTime) {
       appointment.appointmentTime = new Date(data.appointmentTime);
     }
-    
+
     if (data.completedByStaffId) {
       appointment.completedByStaffId = data.completedByStaffId;
     }
-    
+
     if (data.completedByStaffName) {
       appointment.completedByStaffName = data.completedByStaffName;
     }
-    
+
     // 如果状态变更为 completed，自动记录完成时间
     if (data.status === 'completed' && appointment.status !== 'completed') {
       appointment.completedAt = new Date();
     }
-    
+
     // 如果是客户取消，记录取消信息
     if (data.status === 'cancelled_by_customer') {
       appointment.cancelledAt = new Date();
@@ -191,7 +208,7 @@ export class AppointmentsService {
         appointment.cancelReason = data.cancelReason;
       }
     }
-    
+
     // 如果是店家取消
     if (data.status === 'cancelled_by_merchant') {
       appointment.cancelledAt = new Date();
@@ -200,7 +217,7 @@ export class AppointmentsService {
         appointment.cancelReason = data.cancelReason;
       }
     }
-    
+
     Object.assign(appointment, data);
     return this.appointmentsRepository.save(appointment);
   }

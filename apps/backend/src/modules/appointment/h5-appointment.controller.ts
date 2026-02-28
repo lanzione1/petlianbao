@@ -1,14 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Put,
-  Body,
-  Param,
-  Query,
-  UseGuards,
-  Request,
-} from '@nestjs/common';
+import { Controller, Get, Post, Put, Body, Param, Query, UseGuards, Request } from '@nestjs/common';
 import { H5AppointmentService } from './h5-appointment.service';
 import {
   CreateH5AppointmentDto,
@@ -45,17 +35,9 @@ export class H5AppointmentController {
   }
 
   @Put(':id/reschedule')
-  async proposeReschedule(
-    @Request() req,
-    @Param('id') id: string,
-    @Body() dto: RescheduleDto,
-  ) {
+  async proposeReschedule(@Request() req, @Param('id') id: string, @Body() dto: RescheduleDto) {
     const customerId = req.user.customerId;
-    const appointment = await this.appointmentService.proposeReschedule(
-      id,
-      customerId,
-      dto,
-    );
+    const appointment = await this.appointmentService.proposeReschedule(id, customerId, dto);
     return { success: true, data: appointment };
   }
 
@@ -73,30 +55,19 @@ export class H5AppointmentController {
     @Body() dto: ConfirmRescheduleDto,
   ) {
     const customerId = req.user.customerId;
-    const appointment = await this.appointmentService.confirmReschedule(
-      id,
-      customerId,
-      dto,
-    );
+    const appointment = await this.appointmentService.confirmReschedule(id, customerId, dto);
     return { success: true, data: appointment };
   }
 
   @Put(':id/reject')
   async rejectReschedule(@Request() req, @Param('id') id: string) {
     const customerId = req.user.customerId;
-    const appointment = await this.appointmentService.rejectReschedule(
-      id,
-      customerId,
-    );
+    const appointment = await this.appointmentService.rejectReschedule(id, customerId);
     return { success: true, data: appointment };
   }
 
   @Put(':id/cancel')
-  async cancel(
-    @Request() req,
-    @Param('id') id: string,
-    @Body() dto: CancelDto,
-  ) {
+  async cancel(@Request() req, @Param('id') id: string, @Body() dto: CancelDto) {
     const customerId = req.user.customerId;
     const result = await this.appointmentService.cancel(id, customerId, dto);
     return result;

@@ -32,16 +32,19 @@ export class StaffService {
     return this.staffsRepository.findOne({ where: { openid } });
   }
 
-  async create(merchantId: string, data: {
-    openid: string;
-    nickname?: string;
-    avatar?: string;
-    role?: 'admin' | 'staff';
-  }): Promise<Staff> {
+  async create(
+    merchantId: string,
+    data: {
+      openid: string;
+      nickname?: string;
+      avatar?: string;
+      role?: 'admin' | 'staff';
+    },
+  ): Promise<Staff> {
     const existing = await this.staffsRepository.findOne({
       where: { openid: data.openid },
     });
-    
+
     if (existing) {
       if (existing.merchantId === merchantId) {
         throw new ForbiddenException('该用户已是店员');
@@ -59,7 +62,7 @@ export class StaffService {
     });
 
     const result = await this.staffsRepository.save(staff);
-    
+
     await this.log(merchantId, result.id, result.nickname, 'add_staff', 'staff', result.id, {
       nickname: result.nickname,
       role: result.role,
@@ -76,7 +79,7 @@ export class StaffService {
     if (staff.role === 'admin') {
       throw new ForbiddenException('不能删除管理员');
     }
-    
+
     await this.log(merchantId, staff.id, staff.nickname, 'remove_staff', 'staff', staff.id, {
       nickname: staff.nickname,
     });
@@ -84,17 +87,26 @@ export class StaffService {
     await this.staffsRepository.delete(id);
   }
 
-  async updateStatus(id: string, status: 'active' | 'disabled', merchantId: string): Promise<Staff> {
+  async updateStatus(
+    id: string,
+    status: 'active' | 'disabled',
+    merchantId: string,
+  ): Promise<Staff> {
     const staff = await this.findOne(id);
     if (staff.merchantId !== merchantId) {
       throw new ForbiddenException('无权操作');
     }
-    
+
     await this.staffsRepository.update(id, { status });
-    
-    await this.log(merchantId, staff.id, staff.nickname, 
-      status === 'active' ? 'enable_staff' : 'disable_staff', 
-      'staff', id, { nickname: staff.nickname, status }
+
+    await this.log(
+      merchantId,
+      staff.id,
+      staff.nickname,
+      status === 'active' ? 'enable_staff' : 'disable_staff',
+      'staff',
+      id,
+      { nickname: staff.nickname, status },
     );
 
     return this.findOne(id);
@@ -121,15 +133,19 @@ export class StaffService {
     await this.logsRepository.save(logEntry);
   }
 
-  async findLogs(merchantId: string, options?: {
-    staffId?: string;
-    action?: string;
-    startDate?: Date;
-    endDate?: Date;
-    limit?: number;
-    offset?: number;
-  }): Promise<{ data: OperationLog[]; total: number }> {
-    const query = this.logsRepository.createQueryBuilder('log')
+  async findLogs(
+    merchantId: string,
+    options?: {
+      staffId?: string;
+      action?: string;
+      startDate?: Date;
+      endDate?: Date;
+      limit?: number;
+      offset?: number;
+    },
+  ): Promise<{ data: OperationLog[]; total: number }> {
+    const query = this.logsRepository
+      .createQueryBuilder('log')
       .where('log.merchantId = :merchantId', { merchantId });
 
     if (options?.staffId) {
@@ -146,7 +162,7 @@ export class StaffService {
     }
 
     const total = await query.getCount();
-    
+
     const data = await query
       .orderBy('log.createdAt', 'DESC')
       .skip(options?.offset || 0)

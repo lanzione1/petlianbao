@@ -40,10 +40,10 @@ export class Withdrawal {
   @Column({ name: 'account_name', length: 100, nullable: true })
   accountName: string;
 
-  @Column({ 
-    name: 'status', 
-    length: 20, 
-    default: WithdrawalStatus.PENDING 
+  @Column({
+    name: 'status',
+    length: 20,
+    default: WithdrawalStatus.PENDING,
   })
   status: WithdrawalStatus;
 
