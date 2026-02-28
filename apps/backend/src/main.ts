@@ -30,7 +30,7 @@ async function bootstrap() {
   // CORS 配置：支持微信小程序、H5 和管理后台
   const corsOrigins = process.env.CORS_ORIGINS 
     ? process.env.CORS_ORIGINS.split(',') 
-    : ['http://localhost:5173', 'http://127.0.0.1:5173', 'http://localhost:5174', 'http://127.0.0.1:5174'];
+    : ['http://localhost:5173', 'http://127.0.0.1:5173', 'http://localhost:5174', 'http://127.0.0.1:5174', 'https://lanzione1.github.io'];
   
   app.enableCors({
     origin: corsOrigins,

@@ -102,7 +102,7 @@ import { NotificationModule } from './modules/notification/notification.module';
           password: configService.get('database.password'),
           database: configService.get('database.database'),
           entities: [__dirname + '/**/*.entity{.ts,.js}'],
-          synchronize: nodeEnv === 'development',
+          synchronize: nodeEnv === 'development' || process.env.DATABASE_SYNC === 'true',
           logging: nodeEnv === 'development',
           autoLoadEntities: true,
         };
