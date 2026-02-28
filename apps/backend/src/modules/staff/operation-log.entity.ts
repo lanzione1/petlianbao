@@ -35,7 +35,7 @@ export class OperationLog {
   @Column({ name: 'target_id', nullable: true })
   targetId: string;
 
-  @Column({ name: 'details', type: 'jsonb', nullable: true })
+  @Column({ name: 'details', type: 'json', nullable: true })
   details: Record<string, any>;
 
   @CreateDateColumn({ name: 'created_at' })

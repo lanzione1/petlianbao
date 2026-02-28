@@ -28,7 +28,7 @@ export class Transaction {
   @Column({ name: 'appointment_id', nullable: true })
   appointmentId: string;
 
-  @Column({ type: 'jsonb' })
+  @Column({ type: 'json' })
   items: TransactionItem[];
 
   @Column({ name: 'total_amount', type: 'decimal', precision: 10, scale: 2 })

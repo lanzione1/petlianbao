@@ -26,7 +26,7 @@ export class NotificationLog {
   @Column({ name: 'template_id', length: 100, nullable: true })
   templateId: string;
 
-  @Column({ type: 'jsonb', nullable: true })
+  @Column({ type: 'json', nullable: true })
   content: Record<string, any>;
 
   @Column({ length: 20, default: 'pending' })

@@ -34,7 +34,7 @@ export class Customer {
   @Column({ type: 'text', nullable: true })
   notes: string;
 
-  @Column({ type: 'jsonb', default: [] })
+  @Column({ type: 'json', default: [] })
   tags: string[];
 
   @Column({ name: 'total_spent', type: 'decimal', precision: 10, scale: 2, default: 0 })

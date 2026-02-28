@@ -9,9 +9,7 @@
       "envVariables": {
         "NODE_ENV": "production",
         "PORT": "80",
-        "DATABASE_SSL": "true",
-        "DATABASE_SSL_REJECT_UNAUTHORIZED": "false",
-        "REDIS_TLS": "true"
+        "DATABASE_TYPE": "mysql"
       },
       "cpu": 0.5,
       "mem": 512,

@@ -22,13 +22,25 @@ FROM node:18-alpine AS production
 
 WORKDIR /app
 
-# 复制构建产物
-COPY --from=builder /app/apps/backend/dist ./dist
-COPY --from=builder /app/apps/backend/package.json ./
-COPY --from=builder /app/node_modules ./node_modules
+# 安装 pnpm
+RUN npm install -g pnpm@8.15.0
 
-# 安装 pnpm 并重新安装生产依赖（确保 mysql2 等依赖正确安装）
-RUN npm install -g pnpm@8.15.0 && pnpm install --production --frozen-lockfile
+# 复制 workspace 配置
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/backend/package.json ./apps/backend/
+COPY packages/types/package.json ./packages/types/
+COPY packages/utils/package.json ./packages/utils/
+
+# 只安装生产依赖
+RUN pnpm install --prod --frozen-lockfile
+
+# 从构建阶段复制构建产物
+COPY --from=builder /app/apps/backend/dist ./apps/backend/dist
+COPY --from=builder /app/packages/types/dist ./packages/types/dist
+COPY --from=builder /app/packages/utils/dist ./packages/utils/dist
+
+# 切换到 backend 工作目录
+WORKDIR /app/apps/backend
 
 # 创建 uploads 目录
 RUN mkdir -p uploads

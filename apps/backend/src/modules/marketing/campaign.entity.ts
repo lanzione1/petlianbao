@@ -21,10 +21,10 @@ export class Campaign {
   @Column({ length: 100, nullable: true })
   title: string;
 
-  @Column({ type: 'jsonb', nullable: true })
+  @Column({ type: 'json', nullable: true })
   content: Record<string, any>;
 
-  @Column({ name: 'target_tags', type: 'jsonb', default: [] })
+  @Column({ name: 'target_tags', type: 'json', default: [] })
   targetTags: string[];
 
   @Column({ name: 'sent_count', default: 0 })

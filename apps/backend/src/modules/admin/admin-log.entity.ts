@@ -29,7 +29,7 @@ export class AdminLog {
   @Column({ name: 'target_id', length: 100, nullable: true })
   targetId: string;
 
-  @Column({ name: 'detail', type: 'jsonb', nullable: true })
+  @Column({ name: 'detail', type: 'json', nullable: true })
   detail: Record<string, any>;
 
   @Column({ name: 'ip', length: 50, nullable: true })

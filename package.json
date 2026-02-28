@@ -18,7 +18,7 @@
   },
   "lint-staged": {
     "apps/backend/**/*.{ts,tsx}": [
-      "eslint --fix",
+      "eslint --fix --resolve-plugins-relative-to=apps/backend",
       "prettier --write"
     ],
     "apps/admin-web/**/*.{vue,ts,tsx}": [

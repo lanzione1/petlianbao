@@ -16,7 +16,7 @@
 
 | 类型 | 技术 |
 |------|------|
-| 后端 | NestJS + TypeScript + PostgreSQL + Redis |
+| 后端 | NestJS + TypeScript + MySQL/PostgreSQL + Redis |
 | 商家端 | 原生微信小程序 |
 | 客户端 | Vue3 + Vite (H5) |
 | 部署 | Docker + Nginx + 腾讯云 |

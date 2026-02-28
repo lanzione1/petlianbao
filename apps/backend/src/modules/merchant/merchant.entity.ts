@@ -35,7 +35,7 @@ export class Merchant {
 
   @Column({ 
     name: 'business_hours', 
-    type: 'jsonb', 
+    type: 'json', 
     default: { weekdays: ['09:00-18:00'], weekends: ['09:00-20:00'] }
   })
   businessHours: Record<string, any>;
